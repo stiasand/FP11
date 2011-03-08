@@ -1,12 +1,15 @@
 package client.gui;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import model.*;
 
-public class CalendarFrame {
+public class CalendarFrame implements PropertyChangeListener {
 	private static CalendarPanel calendarPanel;
 	private static JFrame calendarFrame;
 
@@ -36,5 +39,11 @@ public class CalendarFrame {
 		} catch (IOException e) {
 			return "";
 		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 }
