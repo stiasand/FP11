@@ -5,10 +5,9 @@ import java.beans.PropertyChangeSupport;
 public class Employee {
 	private final PropertyChangeSupport propertyChange = new PropertyChangeSupport(this);
 
-	private String username;
-	private String password;
+	private String username, password;
 	
-	private Appointments appointments;
+	private Calendar calendar;
 	
 	public boolean verifyPassword(String password){
 		return this.password.equals(password);

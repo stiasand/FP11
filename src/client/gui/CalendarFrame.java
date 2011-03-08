@@ -11,6 +11,7 @@ import model.*;
 
 public class CalendarFrame implements PropertyChangeListener {
 	private static CalendarPanel calendarPanel;
+	private static LoginPanel loginPanel;
 	private static JFrame calendarFrame;
 
 	public static void main(String[] args) {
@@ -21,7 +22,8 @@ public class CalendarFrame implements PropertyChangeListener {
 		String windowTitle = Config.frameTitle;
 		calendarFrame = new JFrame(windowTitle);
 		calendarPanel = new CalendarPanel();
-		calendarFrame.add(calendarPanel);
+		loginPanel = new LoginPanel();
+		calendarFrame.add(loginPanel);
 		calendarFrame.setSize(Config.frameWidth, Config.frameHeight);
 		calendarFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		calendarFrame.setVisible(true);
