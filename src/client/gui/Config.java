@@ -3,6 +3,6 @@ package client.gui;
 import java.io.Serializable;
 
 class Config implements Serializable {
-	public static final String frameTitle = "Wonderful Calendar";
-	public static final int frameWidth = 800, frameHeight = 600;
+	public static final String frameTitle = "Kalendar";
+	public static final int frameWidth = 300, frameHeight = 200;
 }

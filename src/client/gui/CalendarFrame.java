@@ -1,4 +1,5 @@
 package client.gui;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -6,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import model.*;
 
 public class CalendarFrame implements PropertyChangeListener {
 	private static CalendarPanel calendarPanel;
@@ -15,6 +16,9 @@ public class CalendarFrame implements PropertyChangeListener {
 	private static JFrame calendarFrame;
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {}
 		setupWindow();
 	}
 
@@ -23,7 +27,7 @@ public class CalendarFrame implements PropertyChangeListener {
 		calendarFrame = new JFrame(windowTitle);
 		calendarPanel = new CalendarPanel();
 		loginPanel = new LoginPanel();
-		calendarFrame.add(loginPanel);
+		calendarFrame.add(new DatePicker());
 		calendarFrame.setSize(Config.frameWidth, Config.frameHeight);
 		calendarFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		calendarFrame.setVisible(true);
@@ -46,6 +50,6 @@ public class CalendarFrame implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
