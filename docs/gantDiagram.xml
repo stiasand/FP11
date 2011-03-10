@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2011-03-01" view-index="0" gantt-divider-location="397" resource-divider-location="297" version="2.0">
+<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2011-03-20" view-index="0" gantt-divider-location="550" resource-divider-location="541" version="2.0">
     <description/>
-    <view zooming-state="default:2" id="gantt-chart"/>
+    <view zooming-state="default:3" id="gantt-chart"/>
     <view id="resource-table">
-        <field id="0" name="Name" width="88" order="0"/>
-        <field id="1" name="Default role" width="11" order="1"/>
+        <field id="0" name="Name" width="59" order="0"/>
+        <field id="1" name="Default role" width="40" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -34,284 +34,231 @@
         </taskproperties>
         <task id="62" name="Prosjektplan" color="#8cb6ce" meeting="false" start="2011-03-07" duration="2" complete="0" priority="1" expand="true">
             <depend id="17" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="0"/>
             <task id="2" name="Bryt ned i arbeidspakker" color="#8cb6ce" meeting="false" start="2011-03-07" duration="2" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
             <task id="82" name="Risikoanalyse" color="#8cb6ce" meeting="false" start="2011-03-08" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="3"/>
             </task>
             <task id="3" name="Estimer timeverk" color="#8cb6ce" meeting="false" start="2011-03-08" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="1"/>
             </task>
             <task id="5" name="Ganttdiagram" color="#8cb6ce" meeting="false" start="2011-03-08" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="6"/>
             </task>
-        </task>
-        <task id="17" name="Innlevering FE1" color="#8cb6ce" meeting="true" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="109" name="Deadline_FE1" color="#ff0033" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
         <task id="50" name="Systemtestplan" color="#8cb6ce" meeting="false" start="2011-03-08" duration="2" complete="0" priority="1" expand="true">
             <depend id="60" type="2" difference="0" hardness="Strong"/>
             <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
-        <task id="60" name="Innlevering FE2" color="#8cb6ce" meeting="true" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="107" name="Deadline_FE2" color="#ff0033" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
         <task id="51" name="Overordnet design" color="#8cb6ce" meeting="false" start="2011-03-14" duration="3" complete="0" priority="1" expand="true">
             <depend id="61" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="0"/>
             <task id="119" name="Use Case-diagram" color="#8cb6ce" meeting="false" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
             <task id="118" name="Tekstlig use case" color="#8cb6ce" meeting="false" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
             <task id="121" name="Beskrivelse av systemets struktur" color="#8cb6ce" meeting="false" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
             <task id="120" name="Sekvensdiagram" color="#8cb6ce" meeting="false" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
             <task id="54" name="Klassediagram" color="#8cb6ce" meeting="false" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
         </task>
-        <task id="61" name="Innlevering FE3" color="#8cb6ce" meeting="true" start="2011-03-17" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="115" name="Deadline_FE3" color="#ff0033" meeting="true" start="2011-03-18" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="18" name="Papirprototype" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="false">
+        <task id="18" name="Papirprototype" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
             <depend id="46" type="2" difference="0" hardness="Strong"/>
             <depend id="55" type="2" difference="0" hardness="Rubber"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
-            <task id="19" name="Ukepanel" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
-            </task>
-            <task id="20" name="Kontrollpanel" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
-            </task>
-            <task id="21" name="Varselvindu" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
-            </task>
-            <task id="22" name="Innloggingsvindu" color="#8cb6ce" meeting="false" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
-            </task>
+            <customproperty taskproperty-id="tpc0" value="8"/>
         </task>
         <task id="48" name="Testoppsett (MMI)" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
             <depend id="46" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="8"/>
         </task>
         <task id="46" name="Pilottest med studass (D2a)" color="#8cb6ce" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="2"/>
         </task>
-        <task id="111" name="Deadline_D2a" color="#ff0000" meeting="true" start="2011-03-15" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="14" name="KTN1" color="#8cb6ce" meeting="false" start="2011-03-09" duration="9" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-            <task id="15" name="Fase 1" color="#8cb6ce" meeting="false" start="2011-03-09" duration="4" complete="0" priority="1" expand="true">
+        <task id="14" name="KTN1" color="#8cb6ce" meeting="false" start="2011-03-09" duration="3" complete="0" priority="1" expand="true">
+            <customproperty taskproperty-id="tpc0" value="20"/>
+            <task id="15" name="Fase 1" color="#8cb6ce" meeting="false" start="2011-03-09" duration="2" complete="0" priority="1" expand="false">
                 <depend id="16" type="2" difference="0" hardness="Strong"/>
-                <customproperty taskproperty-id="tpc0" value="16"/>
-                <task id="30" name="A desciption of what we intend to do with A1 to satisfy requirements" color="#8cb6ce" meeting="false" start="2011-03-09" duration="2" complete="0" priority="1" expand="true">
-                    <depend id="26" type="2" difference="0" hardness="Strong"/>
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                    <task id="32" name="State diagram for a1" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
-                        <customproperty taskproperty-id="tpc0" value="16"/>
-                    </task>
-                    <task id="33" name="textual description" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
-                        <customproperty taskproperty-id="tpc0" value="16"/>
-                    </task>
-                    <task id="135" name="Sequence diagrams between Application, A1 and A2" color="#8cb6ce" meeting="false" start="2011-03-09" duration="2" complete="0" priority="1" expand="true">
-                        <customproperty taskproperty-id="tpc0" value="16"/>
-                    </task>
-                    <task id="34" name="Test plan" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
-                        <customproperty taskproperty-id="tpc0" value="16"/>
-                    </task>
-                    <task id="31" name="Message sequence charts between a1 and a2" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
-                        <customproperty taskproperty-id="tpc0" value="16"/>
-                    </task>
+                <customproperty taskproperty-id="tpc0" value="5"/>
+                <task id="32" name="State diagram for a1" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="1"/>
                 </task>
-                <task id="26" name="Innlevering KTN1 phase I" color="#8cb6ce" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
+                <task id="33" name="textual description" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="1"/>
                 </task>
-                <task id="117" name="Deadline_KTN1 phase I" color="#ff0000" meeting="true" start="2011-03-14" duration="1" complete="0" priority="1" expand="false">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
+                <task id="135" name="Sequence diagrams between Application, A1 and A2" color="#8cb6ce" meeting="false" start="2011-03-09" duration="2" complete="0" priority="1" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="1"/>
+                </task>
+                <task id="34" name="Test plan" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="1"/>
+                </task>
+                <task id="31" name="Message sequence charts between a1 and a2" color="#8cb6ce" meeting="false" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
+                    <customproperty taskproperty-id="tpc0" value="1"/>
                 </task>
             </task>
-            <task id="16" name="Fase2" color="#8cb6ce" meeting="false" start="2011-03-15" duration="5" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
-                <task id="29" name="Forbedring av fase 1" color="#8cb6ce" meeting="false" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
+            <task id="16" name="Fase2" color="#8cb6ce" meeting="false" start="2011-03-11" duration="1" complete="0" priority="1" expand="false">
+                <customproperty taskproperty-id="tpc0" value="3"/>
+                <task id="29" name="Forbedring av fase 1" color="#8cb6ce" meeting="false" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
                     <depend id="28" type="2" difference="0" hardness="Rubber"/>
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                </task>
-                <task id="28" name="Innlevering KTN1 Fase II" color="#8cb6ce" meeting="true" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                </task>
-                <task id="123" name="Deadline_KTN1 Phase II" color="#ff0000" meeting="true" start="2011-03-21" duration="1" complete="0" priority="1" expand="false">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
+                    <customproperty taskproperty-id="tpc0" value="3"/>
                 </task>
             </task>
         </task>
         <task id="58" name="Rapport D2" color="#8cb6ce" meeting="false" start="2011-03-21" duration="1" complete="0" priority="1" expand="true">
             <depend id="59" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="4"/>
         </task>
         <task id="64" name="Evaluering av annen gruppes design" color="#8cb6ce" meeting="false" start="2011-03-21" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="59" name="Innlevering D2" color="#8cb6ce" meeting="true" start="2011-03-22" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="113" name="Deadline_D2b" color="#ff0000" meeting="true" start="2011-03-25" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="4"/>
         </task>
         <task id="55" name="Detaljert skjermdesign" color="#8cb6ce" meeting="false" start="2011-03-21" duration="1" complete="0" priority="1" expand="true">
             <depend id="56" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="2"/>
         </task>
         <task id="56" name="Konstruksjonbeskrivelse" color="#8cb6ce" meeting="false" start="2011-03-22" duration="1" complete="0" priority="1" expand="true">
             <depend id="23" type="2" difference="0" hardness="Strong"/>
             <depend id="57" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="57" name="Innlevering D3" color="#8cb6ce" meeting="true" start="2011-03-23" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="134" name="Deadline_D3" color="#ff0000" meeting="true" start="2011-04-15" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="2"/>
         </task>
         <task id="13" name="KTN2" color="#8cb6ce" meeting="false" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="12"/>
             <task id="35" name="Produce code that delivers the service" color="#8cb6ce" meeting="false" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="6"/>
             </task>
             <task id="36" name="Update diagrams from KTN1" color="#8cb6ce" meeting="false" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
             <task id="37" name="Test log" color="#8cb6ce" meeting="false" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
             <task id="38" name="Demonstration" color="#8cb6ce" meeting="true" start="2011-03-16" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
-        </task>
-        <task id="125" name="Deadline_KTN2" color="#ff0000" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
         <task id="40" name="Design database" color="#8cb6ce" meeting="false" start="2011-03-11" duration="2" complete="0" priority="1" expand="true">
-            <depend id="10" type="2" difference="0" hardness="Strong"/>
             <depend id="43" type="2" difference="0" hardness="Strong"/>
             <depend id="84" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="6"/>
             <task id="41" name="ER-diagram" color="#8cb6ce" meeting="false" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
                 <depend id="42" type="2" difference="0" hardness="Strong"/>
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="4"/>
             </task>
             <task id="42" name="Kravoppfyllelsesdokument" color="#8cb6ce" meeting="false" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
-        </task>
-        <task id="84" name="Innlevering DB1" color="#8cb6ce" meeting="true" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="127" name="Deadline_DB1 (20. mars)" color="#ff0000" meeting="true" start="2011-03-18" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
         <task id="7" name="Implementasjon" color="#8cb6ce" meeting="false" start="2011-03-15" duration="17" complete="0" priority="1" expand="true">
             <depend id="53" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
-            <task id="8" name="Klient" color="#8cb6ce" meeting="false" start="2011-03-23" duration="11" complete="0" priority="1" expand="true">
+            <customproperty taskproperty-id="tpc0" value="96"/>
+            <task id="25" name="Nettverk" color="#8cb6ce" meeting="false" start="2011-04-04" duration="3" complete="0" priority="1" expand="true">
                 <customproperty taskproperty-id="tpc0" value="16"/>
-                <task id="23" name="GUI" color="#8cb6ce" meeting="false" start="2011-03-23" duration="1" complete="0" priority="1" expand="true">
+            </task>
+            <task id="23" name="GUI" color="#8cb6ce" meeting="false" start="2011-03-23" duration="3" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="48"/>
+                <task id="136" name="Datoplukker" color="#8cb6ce" meeting="false" start="2011-03-23" duration="3" complete="0" priority="1" expand="true">
                     <customproperty taskproperty-id="tpc0" value="16"/>
                 </task>
-                <task id="24" name="Modell" color="#8cb6ce" meeting="false" start="2011-04-04" duration="2" complete="0" priority="1" expand="true">
+                <task id="137" name="Kalenderpanel" color="#8cb6ce" meeting="false" start="2011-03-23" duration="3" complete="0" priority="1" expand="true">
                     <customproperty taskproperty-id="tpc0" value="16"/>
                 </task>
-                <task id="25" name="Nettverk" color="#8cb6ce" meeting="false" start="2011-04-04" duration="3" complete="0" priority="1" expand="true">
+                <task id="138" name="Dialoger/menyer/etc." color="#8cb6ce" meeting="false" start="2011-03-23" duration="3" complete="0" priority="1" expand="true">
                     <customproperty taskproperty-id="tpc0" value="16"/>
                 </task>
             </task>
-            <task id="9" name="Server" color="#8cb6ce" meeting="false" start="2011-03-15" duration="15" complete="0" priority="1" expand="true">
+            <task id="43" name="Definer databaseskjema (SQL)" color="#8cb6ce" meeting="false" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
+                <depend id="132" type="2" difference="0" hardness="Rubber"/>
                 <customproperty taskproperty-id="tpc0" value="16"/>
-                <task id="10" name="Modell" color="#8cb6ce" meeting="false" start="2011-03-15" duration="2" complete="0" priority="1" expand="true">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                </task>
-                <task id="83" name="Nettverk" color="#8cb6ce" meeting="false" start="2011-04-04" duration="1" complete="0" priority="1" expand="true">
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                </task>
-                <task id="43" name="Definer databaseskjema (SQL)" color="#8cb6ce" meeting="false" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
-                    <depend id="132" type="2" difference="0" hardness="Rubber"/>
-                    <customproperty taskproperty-id="tpc0" value="16"/>
-                </task>
             </task>
-        </task>
-        <task id="132" name="Innlevering DB2" color="#8cb6ce" meeting="true" start="2011-04-05" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="131" name="Deadline_DB2 (10. april)" color="#ff0000" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <task id="24" name="Modell" color="#8cb6ce" meeting="false" start="2011-04-04" duration="2" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="16"/>
+            </task>
         </task>
         <task id="85" name="Systemtesting" color="#8cb6ce" meeting="false" start="2011-04-07" duration="1" complete="0" priority="1" expand="true">
             <depend id="53" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="0"/>
         </task>
         <task id="53" name="Sluttrapport" color="#8cb6ce" meeting="false" start="2011-04-08" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="63" name="Innlevering FE4" color="#8cb6ce" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="true">
-            <depend id="53" type="4" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="16"/>
-        </task>
-        <task id="129" name="Deadline_FE4" color="#ff0033" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="0"/>
         </task>
         <task id="67" name="Deadlines" color="#8cb6ce" meeting="false" start="2011-03-11" duration="26" complete="0" priority="1" expand="false">
-            <customproperty taskproperty-id="tpc0" value="16"/>
+            <customproperty taskproperty-id="tpc0" value="0"/>
             <task id="68" name="FE1" color="#ff0033" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="69" name="FE2" color="#ff0033" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="74" name="KTN1 phase I" color="#ff0000" meeting="true" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="72" name="D2a" color="#ff0000" meeting="true" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="70" name="FE3" color="#ff0033" meeting="true" start="2011-03-18" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="77" name="DB1 (20. mars)" color="#ff0000" meeting="true" start="2011-03-18" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="75" name="KTN1 Phase II" color="#ff0000" meeting="true" start="2011-03-21" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="73" name="D2b" color="#ff0000" meeting="true" start="2011-03-25" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="79" name="DB2 (10. april)" color="#ff0000" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="71" name="FE4" color="#ff0033" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="76" name="KTN2" color="#ff0000" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
             <task id="78" name="D3" color="#ff0000" meeting="true" start="2011-04-15" duration="1" complete="0" priority="1" expand="true">
-                <customproperty taskproperty-id="tpc0" value="16"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+        </task>
+        <task id="139" name="Innleveringer" color="#8cb6ce" meeting="false" start="2011-03-09" duration="24" complete="0" priority="1" expand="false">
+            <customproperty taskproperty-id="tpc0" value="0"/>
+            <task id="17" name="Innlevering FE1" color="#8cb6ce" meeting="true" start="2011-03-09" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="60" name="Innlevering FE2" color="#8cb6ce" meeting="true" start="2011-03-10" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="26" name="Innlevering KTN1 phase I" color="#8cb6ce" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="84" name="Innlevering DB1" color="#8cb6ce" meeting="true" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="28" name="Innlevering KTN1 Fase II" color="#8cb6ce" meeting="true" start="2011-03-15" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="61" name="Innlevering FE3" color="#8cb6ce" meeting="true" start="2011-03-17" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="59" name="Innlevering D2" color="#8cb6ce" meeting="true" start="2011-03-22" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="57" name="Innlevering D3" color="#8cb6ce" meeting="true" start="2011-03-23" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="132" name="Innlevering DB2" color="#8cb6ce" meeting="true" start="2011-04-05" duration="1" complete="0" priority="1" expand="true">
+                <customproperty taskproperty-id="tpc0" value="0"/>
+            </task>
+            <task id="63" name="Innlevering FE4" color="#8cb6ce" meeting="true" start="2011-04-11" duration="1" complete="0" priority="1" expand="true">
+                <depend id="53" type="4" difference="0" hardness="Strong"/>
+                <customproperty taskproperty-id="tpc0" value="0"/>
             </task>
         </task>
     </tasks>
@@ -335,25 +282,23 @@
         <allocation task-id="54" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="18" resource-id="4" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="48" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="30" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
-        <allocation task-id="30" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="32" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="33" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="135" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="34" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="31" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
-        <allocation task-id="29" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="29" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="29" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="41" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="42" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="85" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
     </allocations>
     <vacations/>
     <taskdisplaycolumns>
-        <displaycolumn property-id="tpd3" order="0" width="197"/>
-        <displaycolumn property-id="tpd4" order="1" width="34"/>
-        <displaycolumn property-id="tpd5" order="2" width="46"/>
-        <displaycolumn property-id="tpc0" order="3" width="57"/>
+        <displaycolumn property-id="tpd3" order="0" width="240"/>
+        <displaycolumn property-id="tpd4" order="1" width="23"/>
+        <displaycolumn property-id="tpd5" order="2" width="30"/>
+        <displaycolumn property-id="tpc0" order="3" width="41"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
