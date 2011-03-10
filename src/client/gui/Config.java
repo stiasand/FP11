@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 class Config implements Serializable {
 	public static final String frameTitle = "Kalendar";
-	public static final int frameWidth = 300, frameHeight = 200;
+	public static final int frameWidth = 800, frameHeight = 600;
 }
