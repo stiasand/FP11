@@ -5,18 +5,18 @@ ext:External[pe]
 User:Actor
 anApplication:Application
 /listeningConnection:ConnectionImpl
-/ConnectionImpl:ConnectionImpl 
+/establishedConnection:ConnectionImpl 
 #aClSocket:ClSocket
 
 User:anApplication.Set up server
-#Application:listeningConnection.new
+
 anApplication:listeningConnection.new(port)
-anApplication:listeningConnection.accept()
-listeningConnection:ConnectionImpl.new(port)
+anApplication:establishedConnection=listeningConnection.accept()
+listeningConnection:establishedConnection.new(port)
 #aConnectionImpl:aClSocket.send(datagram)
-anApplication:ConnectionImpl.receive()
-anApplication:ConnectionImpl.send(message)
-anApplication:ConnectionImpl.close()]]></source>
+anApplication:establishedConnection.receive()
+anApplication:establishedConnection.send(message)
+anApplication:establishedConnection.close()]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>
