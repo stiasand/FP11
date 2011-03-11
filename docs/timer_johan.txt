@@ -1,0 +1,2 @@
+11.3: 10-14 ktn (sekvensdiagrammer)
+11.3: 16-18 ktn (sekvensdiagrammer, (tekstlig beskrivelse))
