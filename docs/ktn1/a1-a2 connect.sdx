@@ -2,12 +2,14 @@
 <diagram>
 <source><![CDATA[#![A1-A2 Set up connection to server]
 ext:External[pe]
-Application:Actor
+Application:actor
 /aConnectionImpl:ConnectionImpl
 aClSocket:ClSocket
 
-Application:aConnectionImpl.new(port)
-Application:aConnectionImpl.connect(remoteadress, remoteport)]]></source>
+Application:aConnectionImpl[m].new(port)
+Application:aConnectionImpl.connect(remoteadress, remoteport)
+aConnectionImpl:aClSocket.send(synpacket)
+aConnectionImpl:synack=aClSocket.receive(myPort)]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>
@@ -56,6 +58,6 @@ Application:aConnectionImpl.connect(remoteadress, remoteport)]]></source>
 <property name="threadNumbersVisible" value="false"/>
 <property name="threaded" value="true"/>
 <property name="upperMargin" value="5"/>
-<property name="verticallySplit" value="true"/>
+<property name="verticallySplit" value="false"/>
 </configuration>
 </diagram>
