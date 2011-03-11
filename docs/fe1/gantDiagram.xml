@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2011-02-27" view-index="0" gantt-divider-location="761" resource-divider-location="541" version="2.0">
+<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2011-03-06" view-index="0" gantt-divider-location="624" resource-divider-location="541" version="2.0">
     <description/>
     <view zooming-state="default:4" id="gantt-chart"/>
     <view id="resource-table">
@@ -34,7 +34,7 @@
         </taskproperties>
         <task id="62" name="Prosjektplan" color="#8cb6ce" meeting="false" start="2011-03-07" duration="2" complete="0" priority="1" expand="true">
             <depend id="17" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="0"/>
+            <customproperty taskproperty-id="tpc0" value="12"/>
             <task id="2" name="Bryt ned i arbeidspakker" color="#8cb6ce" meeting="false" start="2011-03-07" duration="2" complete="0" priority="1" expand="true">
                 <customproperty taskproperty-id="tpc0" value="2"/>
             </task>
@@ -54,7 +54,7 @@
         </task>
         <task id="51" name="Overordnet design" color="#8cb6ce" meeting="false" start="2011-03-14" duration="3" complete="0" priority="1" expand="true">
             <depend id="61" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="0"/>
+            <customproperty taskproperty-id="tpc0" value="40"/>
             <task id="119" name="Use Case-diagram" color="#8cb6ce" meeting="false" start="2011-03-14" duration="1" complete="0" priority="1" expand="true">
                 <customproperty taskproperty-id="tpc0" value="8"/>
             </task>
@@ -183,12 +183,12 @@
         </task>
         <task id="85" name="Systemtesting" color="#8cb6ce" meeting="false" start="2011-04-07" duration="1" complete="0" priority="1" expand="true">
             <depend id="53" type="2" difference="0" hardness="Strong"/>
-            <customproperty taskproperty-id="tpc0" value="0"/>
+            <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
         <task id="53" name="Sluttrapport" color="#8cb6ce" meeting="false" start="2011-04-08" duration="1" complete="0" priority="1" expand="true">
-            <customproperty taskproperty-id="tpc0" value="0"/>
+            <customproperty taskproperty-id="tpc0" value="16"/>
         </task>
-        <task id="67" name="Deadlines" color="#8cb6ce" meeting="false" start="2011-03-11" duration="26" complete="0" priority="1" expand="false">
+        <task id="67" name="Deadlines" color="#8cb6ce" meeting="false" start="2011-03-11" duration="26" complete="0" priority="1" expand="true">
             <customproperty taskproperty-id="tpc0" value="0"/>
             <task id="68" name="FE1" color="#ff0033" meeting="true" start="2011-03-11" duration="1" complete="0" priority="1" expand="true">
                 <customproperty taskproperty-id="tpc0" value="0"/>
@@ -313,10 +313,10 @@
     <vacations/>
     <taskdisplaycolumns>
         <displaycolumn property-id="tpd3" order="0" width="284"/>
-        <displaycolumn property-id="tpd4" order="1" width="32"/>
-        <displaycolumn property-id="tpd5" order="2" width="22"/>
-        <displaycolumn property-id="tpc0" order="3" width="218"/>
-        <displaycolumn property-id="tpd8" order="4" width="74"/>
+        <displaycolumn property-id="tpd4" order="1" width="61"/>
+        <displaycolumn property-id="tpd5" order="2" width="64"/>
+        <displaycolumn property-id="tpc0" order="3" width="61"/>
+        <displaycolumn property-id="tpd8" order="4" width="160"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
