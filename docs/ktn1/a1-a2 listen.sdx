@@ -2,12 +2,67 @@
 <diagram>
 <source><![CDATA[#![A1-A2 Accept connection]
 ext:External[pe]
-Application:Actor
+Application:Application "actor (application)"
 /aConnectionImpl:ConnectionImpl
-aClSocket:ClSocket
+/aClSocketReceiver:ClSocketReceiver
+/aClSocket:ClSocket[x]
 
 Application:aConnectionImpl.new(port)
-Application:aConnectionImpl.accept()]]></source>
+Application:aConnection=aConnectionImpl[m].accept()
+
+#RECEIVE PACKET
+aConnectionImpl:aKtnDiagram=aConnectionImpl[r].receivePacket(true)
+aConnectionImpl:aClSocketReceiver.new(myPort)
+aConnectionImpl:aClSocketReceiver.start()
+aClSocketReceiver:aClSocket.new
+aClSocketReceiver:aKtnDiagram=aClSocket.receive(port)
+
+aConnectionImpl:aClSocketReceiver.stopReceive()
+aClSocketReceiver:aClSocket.cancelReceive()
+aConnectionImpl:aKtnDiagram=aClSocketReceiver.getPacket()
+#end RECEIVE PACKET
+
+
+#SEND SYNACK
+aConnectionImpl[m]:aConnectionImpl[s].sendAck(aKtnDatagram, true)
+aConnectionImpl:synackPacket(ktnDatagram)=aConnectionImpl.constructInternalPacket(SYNACK)
+aConnectionImpl[s]:aClSocket.send(synackPacket)
+#end SEND SYNACK
+
+#aClSocketReceiver:aClSocket.send(aKtnDiagram)
+
+
+
+
+#RECEIVE PACKET
+aConnectionImpl:aKtnDiagram=aConnectionImpl.receivePacket(true)
+#aConnectionImpl:aClSocketReceiver.new(myPort)
+aConnectionImpl:aClSocketReceiver.start()
+#aClSocketReceiver:aClSocket.new
+aClSocketReceiver:aKtnDiagram=aClSocket.receive(port)
+
+aConnectionImpl:aClSocketReceiver.stopReceive()
+aClSocketReceiver:aClSocket.cancelReceive()
+aConnectionImpl:aKtnDiagram=aClSocketReceiver.getPacket()
+#end RECEIVE PACKET
+
+
+
+
+
+
+
+#RECEIVE PACKET
+#aConnectionImpl:aKtnDiagram=aConnectionImpl[r].receivePacket(true)
+#aConnectionImpl:aClSocketReceiver.new(myPort)
+#aConnectionImpl:aClSocketReceiver.start()
+#aClSocketReceiver:aClSocket.new
+#aClSocketReceiver:aKtnDiagram=aClSocket.receive(port)
+
+#aConnectionImpl:aClSocketReceiver.stopReceive()
+#aClSocketReceiver:aClSocket.cancelReceive()
+#aConnectionImpl:aKtnDiagram=aClSocketReceiver.getPacket()
+#end RECEIVE PACKET]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>
@@ -56,6 +111,6 @@ Application:aConnectionImpl.accept()]]></source>
 <property name="threadNumbersVisible" value="false"/>
 <property name="threaded" value="true"/>
 <property name="upperMargin" value="5"/>
-<property name="verticallySplit" value="true"/>
+<property name="verticallySplit" value="false"/>
 </configuration>
 </diagram>
