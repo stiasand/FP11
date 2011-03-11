@@ -6,7 +6,9 @@ Application:Actor
 aConnectionImpl:ConnectionImpl
 aClSocket:ClSocket
 
-Application:aConnectionImpl.send(aString)]]></source>
+Application:aConnectionImpl.send(aString)
+aConnectionImpl:aClSocket.send(aKtnDatagram)
+aConnectionImpl:ackPacket=aClSocket.receive(myPort)]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>
