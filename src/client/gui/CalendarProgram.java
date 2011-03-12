@@ -10,9 +10,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
+
+import client.gui.datepicker.DatePicker;
 
 public class CalendarProgram implements PropertyChangeListener {
 	private static CalendarPanel calendarPanel;

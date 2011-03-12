@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.JPanel;
