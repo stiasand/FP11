@@ -54,7 +54,7 @@ public class ConnectionImpl extends AbstractConnection {
     	else usedPorts.put(myPort, true);
     	
 		this.myPort=myPort;
-		myAddress="127.0.0.1"; //or public ip?
+		myAddress=getIPv4Address();
 		nextSequenceNo=(int)(Math.random()*50); // TODO replace 50 with something meaningful
 		System.out.println("Connection instantiated");
     }
@@ -125,8 +125,6 @@ public class ConnectionImpl extends AbstractConnection {
     		//throw exception
     	}
     	
-    	//update external ip
-    	myAddress=ackPacket.getDest_addr(); //neccessary?
     	
     	
     	System.out.println("Sending ACK");
@@ -170,7 +168,7 @@ public class ConnectionImpl extends AbstractConnection {
 	        	System.out.println("Wrong ack, retry:");
 	        	continue;
 	        }
-	        else if(datagram.getSrc_addr().equals(remoteAddress)){
+	        else if(!datagram.getSrc_addr().equals(remoteAddress)){
 	        	System.out.println("Wrong source address, retry:");
 	            continue;
         	}
