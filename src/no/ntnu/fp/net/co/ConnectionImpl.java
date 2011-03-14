@@ -46,16 +46,15 @@ public class ConnectionImpl extends AbstractConnection {
      *            - the local port to associate with this connection
      */
     public ConnectionImpl(int myPort) {
-    	// TODO check if port is already used, and add to map
+    	// check if port is already used, and add to map
     	if(usedPorts.containsKey(myPort) && usedPorts.get(myPort)){
     		//port already taken, throw exception/return?
     		System.out.println("Port taken!!!");
     	} // TODO find a way to free the port afterwards
     	else usedPorts.put(myPort, true);
+    	
 		this.myPort=myPort;
 		myAddress="127.0.0.1"; //or public ip?
-		remoteAddress="127.0.0.1";
-		remotePort=5555; //TODO should not be assigned here, for debugging only
 		nextSequenceNo=(int)(Math.random()*50); // TODO replace 50 with something meaningful
 		System.out.println("Connection instantiated");
     }
@@ -84,7 +83,56 @@ public class ConnectionImpl extends AbstractConnection {
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
             SocketTimeoutException {
-        //throw new NotImplementedException();
+    	//copy arguments to object
+    	this.remoteAddress=remoteAddress.getHostAddress();
+    	this.remotePort=remotePort;
+    	
+    	//create synpacket
+    	KtnDatagram syn = constructInternalPacket(KtnDatagram.Flag.SYN);
+    	
+    	//send synpacket until synack is received
+    	boolean synackOk=false;
+    	KtnDatagram ackPacket=null;
+    	for(int i=0; i<3; i++){//TODO counter i.e. try to connect three times, then throw exception
+    		try {
+				simplySendPacket(syn);
+			} catch (ClException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//TODO wait here?
+    		ackPacket=receiveAck();
+    		if(ackPacket==null){
+    			System.out.println("No ack-packet received, retry:");
+    		}
+    		else if(ackPacket.getFlag()!=KtnDatagram.Flag.SYN_ACK){
+    			System.out.println("Not a synack, retry:");
+    		}
+    		else if(ackPacket.getAck()!=nextSequenceNo-1){
+    			System.out.println("Wrong sequence no, retry:");
+    		}
+    		else if(ackPacket.getDest_addr().equals(remoteAddress)){
+    			System.out.println("Wrong host, retry:");
+    		}
+    		else {
+    			System.out.println("Valid synack received.");
+    			synackOk=true;
+    			break;
+    		}
+    	}
+    	if(!synackOk){
+    		System.out.println("Timeoutx3..");
+    		//throw exception
+    	}
+    	
+    	//update external ip
+    	myAddress=ackPacket.getDest_addr(); //neccessary?
+    	
+    	
+    	System.out.println("Sending ACK");
+    	//TODO error handling
+    	sendAck(ackPacket, false); //send ack for the synack
+    	System.out.println("\nConnected!!!\n");
     }
 
     /**
@@ -98,33 +146,56 @@ public class ConnectionImpl extends AbstractConnection {
     	state=State.LISTEN;
     	
     	//receive internal packets until we get a syn
-    	KtnDatagram synPacket;
-        do{
+    	KtnDatagram synPacket=null;
+    	while(synPacket==null || synPacket.getFlag()!=KtnDatagram.Flag.SYN){
         	synPacket=receivePacket(true);
         }
-        while(synPacket==null || synPacket.getFlag()!=KtnDatagram.Flag.SYN);
         
         //TODO: check if packet is valid
         
         //send synack
+        remoteAddress=synPacket.getSrc_addr();
+        remotePort=synPacket.getSrc_port();
+        myAddress=synPacket.getDest_addr();
         sendAck(synPacket, true);
         
-        KtnDatagram datagram=receivePacket(true);
-        if(datagram.getAck()== synPacket.getAck()){
-        	//TODO check if the received ackpacket is acks the synpacket, do-while?
+        //wait for ack
+        while(true){
+	        KtnDatagram datagram=receivePacket(true);
+	        if(datagram==null){
+	        	System.out.println("No datagram received, retry:");
+	        	continue;
+	        }
+	        else if(datagram.getAck()!=nextSequenceNo-1){
+	        	System.out.println("Wrong ack, retry:");
+	        	continue;
+	        }
+	        else if(datagram.getSrc_addr().equals(remoteAddress)){
+	        	System.out.println("Wrong source address, retry:");
+	            continue;
+        	}
+	        else if(datagram.getSrc_port()!=remotePort){
+	        	System.out.println("Wrong source port, retry:");
+	        	continue;
+	        }
+	        //more, check destination address?
+	        break;
         }
+        System.out.println("\nConnection Accepted!!!\n");
         
+//        //free resources
+//        state=State.CLOSED;
+//        usedPorts.put(myPort, false);
         
         //create a new connection with correct attributes
-        ConnectionImpl connection = new ConnectionImpl(myPort); //port collisions?
-        connection.remoteAddress=synPacket.getSrc_addr();
-        connection.remotePort=synPacket.getSrc_port();
-        connection.myAddress=myAddress;
-        connection.state=State.ESTABLISHED;
+//        ConnectionImpl connection = new ConnectionImpl(myPort); //port collisions?
+//        connection.remoteAddress=synPacket.getSrc_addr();
+//        connection.remotePort=synPacket.getSrc_port();
+//        connection.myAddress=myAddress;
+//        connection.state=State.ESTABLISHED;
+        state=State.ESTABLISHED;
         
-        state=State.CLOSED;
-        
-    	return connection;
+    	return this;
     }
 
     /**
