@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram>
-<source><![CDATA[#![A1-A2 Send message]
+<source><![CDATA[#![A1-A2 Accept connection (simple)]
 ext:External[pe]
-Application:Actor
-aConnectionImpl:ConnectionImpl
-aClSocket:ClSocket
+Application:Application "actor (application)"
+/aConnection:Connection "aConnectionImpl(a1)"
+/aClSocket:ClSocket[x]
+/synPacket:KtnDiagram
+/synackPacket:KtnDiagram
 
-Application:aConnectionImpl.send(aString)
+Application:aConnection.new(port)
+Application:aConnection=aConnection.accept()
 
-[c:do-while packet not ACK]
-aConnectionImpl:aClSocket.send(aKtnDatagram)
-aConnectionImpl:packet=aClSocket.receive(myPort)
-[/c]]]></source>
+#RECEIVE PACKET
+aConnection:aClSocket.new
+aConnection:aKtnDiagram=aClSocket.receive()
+aClSocket:synPacket.new
+#end RECEIVE PACKET
+
+#send synack
+aConnection:synackPacket.new
+aConnection:aClSocket.send(synackPacket)
+
+#receive ack
+aConnection:aClSocket.receive()]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>

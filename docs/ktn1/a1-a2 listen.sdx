@@ -25,8 +25,8 @@ aConnectionImpl:aKtnDiagram=aClSocketReceiver.getPacket()
 
 #SEND SYNACK
 aConnectionImpl[m]:aConnectionImpl[s].sendAck(aKtnDatagram, true)
-aConnectionImpl:synackPacket(ktnDatagram)=aConnectionImpl.constructInternalPacket(SYNACK)
-aConnectionImpl[s]:aClSocket.send(synackPacket)
+aConnectionImpl:ackToSend=aConnectionImpl.constructInternalPacket(SYNACK)
+aConnectionImpl[s]:aClSocket.send(ackToSend)
 #end SEND SYNACK
 
 #aClSocketReceiver:aClSocket.send(aKtnDiagram)
@@ -35,7 +35,7 @@ aConnectionImpl[s]:aClSocket.send(synackPacket)
 
 
 #RECEIVE PACKET
-aConnectionImpl:aKtnDiagram=aConnectionImpl.receivePacket(true)
+aConnectionImpl[m]:aKtnDiagram=aConnectionImpl.receivePacket(true)
 #aConnectionImpl:aClSocketReceiver.new(myPort)
 aConnectionImpl:aClSocketReceiver.start()
 #aClSocketReceiver:aClSocket.new
