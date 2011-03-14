@@ -8,8 +8,9 @@ aClSocket:ClSocket
 
 Application:aConnectionImpl.close()
 aConnectionImpl:aClSocket.send(finPacket)
-aConnectionImpl:finackPaket=aClSocket.receive()
-aConnectionImpl:]]></source>
+aConnectionImpl:ackPacket=aClSocket.receive()
+aConnectionImpl:finPacket=aClSocket.receive()
+aConnectionImpl:aClSocket.send(ackPacket)]]></source>
 <configuration>
 <property name="actorWidth" value="25"/>
 <property name="allowMessageProperties" value="false"/>
