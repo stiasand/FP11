@@ -3,6 +3,7 @@ package client.gui;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
@@ -40,7 +41,7 @@ public class CalendarProgram implements PropertyChangeListener {
 		calendarFrame.getContentPane().add(datePicker,c);
 		
 		contactsPanel = new ContactsPanel();
-		
+		c.insets = new Insets(0,20,0,0);  //left padding
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 1;
@@ -52,12 +53,13 @@ public class CalendarProgram implements PropertyChangeListener {
 		
 		
 		calendarPanel = new CalendarPanel();
+		c.insets = new Insets(0,0,0,0); 
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
-		c.gridheight = 4;
+		c.gridheight = 5;
 		calendarFrame.getContentPane().add(calendarPanel,c);
 	}
 	

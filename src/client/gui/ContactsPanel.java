@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 
 
-public class ContactsPanel extends JPanel {
+
+public class ContactsPanel extends JPanel implements ListSelectionListener{
 	
 	//TODO use the models list of employees instead of this tempList.
 	private String[] tempListModel = {"Nils","Petter","Jens","Beate","Tiril", "SupaJaaahn"};
@@ -38,7 +40,7 @@ public class ContactsPanel extends JPanel {
 		employeeComboBox.setSelectedIndex(4); 
 		employeeComboBox.addActionListener(new ContactsPanelActionListener());
 		
-		contactsLabel = new JLabel("Vis Kontakters Avtale:");
+		contactsLabel = new JLabel("Vis Kontakters Avtaler:");
 
 		employeeListModel = new DefaultListModel();
 		employeeListModel.addElement(tempListModel[2]); 
@@ -51,7 +53,7 @@ public class ContactsPanel extends JPanel {
 		
 		//adding a scroll pane to the JList
 		employeeScrollPane = new JScrollPane(employeeList);
-		employeeScrollPane.setPreferredSize(new Dimension(300,100));
+		employeeScrollPane.setPreferredSize(new Dimension(200,100));
 		employeeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		employeeScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
@@ -61,10 +63,13 @@ public class ContactsPanel extends JPanel {
 	}
 	
 	class ContactsPanelActionListener implements ActionListener{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if(employeeComboBox.isFocusOwner()){
+				String selectedItem = (String) employeeComboBox.getSelectedItem();
+				employeeListModel.addElement(selectedItem);
+				//TODO remove the selected item from the employeeComoBox's listModel
+				
 			}
 		}
 
@@ -78,6 +83,21 @@ public class ContactsPanel extends JPanel {
 	}
 	public JScrollPane getEmployeeScrollPane() {
 		return employeeScrollPane;
+	}
+	
+	@Override
+	public void valueChanged(ListSelectionEvent event) {
+		
+		try {
+			if(!listSelectionModel.isSelectionEmpty()){
+			String selectedItem = (String) employeeListModel.getElementAt(listSelectionModel.getAnchorSelectionIndex());
+			System.out.println("Employees name: " + selectedItem);
+			}
+		} catch (Exception e) {
+			System.out.println("error occured" + e);
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
