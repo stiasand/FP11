@@ -111,7 +111,7 @@ class GridButton extends JToggleButton {
 		this.row = row;
 		this.column = column;
 		if (row != 0 && column != 0) {
-			setBorderPainted(false);
+			//setBorderPainted(false);
 		}
 	}
 

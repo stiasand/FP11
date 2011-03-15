@@ -20,6 +20,7 @@ public class CalendarProgram implements PropertyChangeListener {
 	private static LoginPanel loginPanel;
 	private static DatePicker datePicker;
 	private static JFrame calendarFrame;
+	private static ContactsPanel contactsPanel;
 
 	public static void main(String[] args) {
 		try {
@@ -32,17 +33,31 @@ public class CalendarProgram implements PropertyChangeListener {
 		GridBagConstraints c = new GridBagConstraints();
 		
 		datePicker = new DatePicker();
-		datePicker.setPreferredSize(new Dimension(300,200));
+		datePicker.setPreferredSize(new Dimension(400,200));
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.gridx = 0;
 		c.gridy = 0;
 		calendarFrame.getContentPane().add(datePicker,c);
 		
+		contactsPanel = new ContactsPanel();
+		
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		calendarFrame.add(contactsPanel.getContactsLabel(),c);
+		c.gridy = 2;
+		calendarFrame.add(contactsPanel.getEmployeeComboBox(),c);
+		c.gridy = 3;
+		calendarFrame.add(contactsPanel.getEmployeeScrollPane(),c);
+		
+		
 		calendarPanel = new CalendarPanel();
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 1;
+		c.gridy = 0;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
+		c.gridheight = 4;
 		calendarFrame.getContentPane().add(calendarPanel,c);
 	}
 	

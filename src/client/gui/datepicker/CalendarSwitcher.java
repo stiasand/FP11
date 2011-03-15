@@ -17,8 +17,8 @@ public class CalendarSwitcher extends JPanel implements PropertyChangeListener {
 	private final PropertyChangeSupport propertyChange = new PropertyChangeSupport(
 			this);
 	
-	public static final String previousSymbol = "◂";
-	public static final String nextSymbol = "▸";
+	public static final String previousSymbol = "<";
+	public static final String nextSymbol = ">";
 
 	private JLabel label;
 	private Locale locale;
