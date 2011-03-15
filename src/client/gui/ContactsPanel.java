@@ -42,6 +42,7 @@ public class ContactsPanel extends JPanel {
 
 		employeeListModel = new DefaultListModel();
 		employeeListModel.addElement(tempListModel[2]); 
+		employeeListModel.addElement(tempListModel[5]); 
 		
 		employeeList = new JList(employeeListModel);
 		listSelectionModel = new DefaultListSelectionModel();
@@ -54,6 +55,7 @@ public class ContactsPanel extends JPanel {
 		employeeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		employeeScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
+		employeeList.setCellRenderer(new ContactsListCellRenderer());
 
 		
 	}
