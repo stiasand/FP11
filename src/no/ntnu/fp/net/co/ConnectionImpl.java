@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -36,7 +37,8 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  */
 public class ConnectionImpl extends AbstractConnection {
 
-    /** Keeps track of the used ports for each server port. */
+    private static final int CONNECTRETRIES = 3;
+	/** Keeps track of the used ports for each server port. */
     private static Map<Integer, Boolean> usedPorts = Collections.synchronizedMap(new HashMap<Integer, Boolean>());
 
     /**
@@ -49,13 +51,15 @@ public class ConnectionImpl extends AbstractConnection {
     	// check if port is already used, and add to map
     	if(usedPorts.containsKey(myPort) && usedPorts.get(myPort)){
     		//port already taken, throw exception/return?
-    		System.out.println("Port taken!!!");
+    		System.out.println("Port already taken!!!");
+    		throw new Error();
     	} // TODO find a way to free the port afterwards
     	else usedPorts.put(myPort, true);
     	
 		this.myPort=myPort;
 		myAddress=getIPv4Address();
-		nextSequenceNo=(int)(Math.random()*50); // TODO replace 50 with something meaningful
+		nextSequenceNo=(int)(Math.random()*2147400000);
+		state=State.CLOSED;
 		System.out.println("Connection instantiated");
     }
 
@@ -89,19 +93,21 @@ public class ConnectionImpl extends AbstractConnection {
     	
     	//create synpacket
     	KtnDatagram syn = constructInternalPacket(KtnDatagram.Flag.SYN);
+    	SendTimer sendTimer = new SendTimer(new ClSocket(), syn);
     	
     	//send synpacket until synack is received
     	boolean synackOk=false;
     	KtnDatagram ackPacket=null;
-    	for(int i=0; i<3; i++){//TODO counter i.e. try to connect three times, then throw exception
-    		try {
-				simplySendPacket(syn);
-			} catch (ClException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    	for(int i=0; i<CONNECTRETRIES && !synackOk; i++){//TODO counter i.e. try to connect three times, then throw exception
+    		Timer timer = new Timer();
+    		timer.scheduleAtFixedRate(sendTimer, 0, RETRANSMIT);
+    		state=State.SYN_SENT;
+    		
 			//TODO wait here?
-    		ackPacket=receiveAck();
+    		
+    		
+    		ackPacket=receiveAck(); //wrap in a while/timer?
+    		//check ackpacket for errors
     		if(ackPacket==null){
     			System.out.println("No ack-packet received, retry:");
     		}
@@ -117,12 +123,14 @@ public class ConnectionImpl extends AbstractConnection {
     		else {
     			System.out.println("Valid synack received.");
     			synackOk=true;
-    			break;
     		}
+    		
+    		timer.cancel();
     	}
+    	
     	if(!synackOk){
-    		System.out.println("Timeoutx3..");
-    		//throw exception
+    		System.out.println("Connection timed out");
+    		throw new Error();
     	}
     	
     	
@@ -130,6 +138,7 @@ public class ConnectionImpl extends AbstractConnection {
     	System.out.println("Sending ACK");
     	//TODO error handling
     	sendAck(ackPacket, false); //send ack for the synack
+    	state=State.ESTABLISHED;
     	System.out.println("\nConnected!!!\n");
     }
 
@@ -149,38 +158,34 @@ public class ConnectionImpl extends AbstractConnection {
         	synPacket=receivePacket(true);
         }
         
+    	state=State.SYN_RCVD;
+    	
         //TODO: check if packet is valid
         
         //send synack
         remoteAddress=synPacket.getSrc_addr();
         remotePort=synPacket.getSrc_port();
         myAddress=synPacket.getDest_addr();
-        sendAck(synPacket, true);
         
-        //wait for ack
-        while(true){
-	        KtnDatagram datagram=receivePacket(true);
-	        if(datagram==null){
-	        	System.out.println("No datagram received, retry:");
-	        	continue;
+        boolean connectOk = false;
+        for(int i=0; i<CONNECTRETRIES && !connectOk; i++){
+        	System.out.println("Sending synack: ");
+        	sendAck(synPacket, true);
+        	//wait for ack
+	        while(!connectOk){
+		        KtnDatagram datagram=receivePacket(true);
+		        connectOk=isValid(datagram);
+		        //more, check destination address?
 	        }
-	        else if(datagram.getAck()!=nextSequenceNo-1){
-	        	System.out.println("Wrong ack, retry:");
-	        	continue;
-	        }
-	        else if(!datagram.getSrc_addr().equals(remoteAddress)){
-	        	System.out.println("Wrong source address, retry:");
-	            continue;
-        	}
-	        else if(datagram.getSrc_port()!=remotePort){
-	        	System.out.println("Wrong source port, retry:");
-	        	continue;
-	        }
-	        //more, check destination address?
-	        break;
         }
-        System.out.println("\nConnection Accepted!!!\n");
+        if(!connectOk){
+        	System.out.println("Never received ack for the synack");
+        	state=State.CLOSED;
+        	throw new ConnectException("Wait for ack timed out");
+        }
         
+        System.out.println("\nConnection Accepted!!!\n");
+        state=State.ESTABLISHED;
 //        //free resources
 //        state=State.CLOSED;
 //        usedPorts.put(myPort, false);
@@ -191,8 +196,7 @@ public class ConnectionImpl extends AbstractConnection {
 //        connection.remotePort=synPacket.getSrc_port();
 //        connection.myAddress=myAddress;
 //        connection.state=State.ESTABLISHED;
-        state=State.ESTABLISHED;
-        
+ 
     	return this;
     }
 
@@ -245,7 +249,20 @@ public class ConnectionImpl extends AbstractConnection {
      * @return true if packet is free of errors, false otherwise.
      */
     protected boolean isValid(KtnDatagram packet) {
-        // TODO implement
-    	return true;
+    	if(state!=State.ESTABLISHED && state!=State.SYN_RCVD)throw new Error();
+    	else if(packet==null)
+        	System.out.println("No datagram received");
+        else if(packet.getFlag()==Flag.ACK && packet.getAck()!=nextSequenceNo-1)
+        	System.out.println("Wrong ack, retry:");
+        else if(!packet.getSrc_addr().equals(remoteAddress))
+        	System.out.println("Wrong source address, retry:");
+        else if(packet.getSrc_port()!=remotePort)
+        	System.out.println("Wrong source port, retry:");
+        else {		        //more, check destination address?
+        	System.out.println("Packet is valid");
+        	return true; //passed all tests :)
+        }
+    	
+    	return false; //one of the tests failed
     }
 }
