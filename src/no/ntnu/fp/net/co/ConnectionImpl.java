@@ -213,7 +213,7 @@ public class ConnectionImpl extends AbstractConnection {
      * @see no.ntnu.fp.net.co.Connection#send(String)
      */
     public void send(String msg) throws ConnectException, IOException {
-    	System.out.println("Trying to send message: " + msg);
+    	System.out.println("\nTrying to send message: " + msg);
     	if(state!=State.ESTABLISHED)throw new ConnectException("Cannot send: Connection not established.");
     	KtnDatagram packet = constructDataPacket(msg);
     	boolean sendOk=false;
@@ -244,10 +244,11 @@ public class ConnectionImpl extends AbstractConnection {
      * @see AbstractConnection#sendAck(KtnDatagram, boolean)
      */
     public String receive() throws ConnectException, IOException {
+    	System.out.println("\nReceiving...");
+    	if(state!=State.ESTABLISHED)throw new ConnectException("Cannot receive: Connection not established.");
         while(true){
         	KtnDatagram datapacket = receivePacket(false);
             if(isValid(datapacket)){
-            	lastValidPacketReceived=datapacket;
             	sendAck(lastValidPacketReceived, false);
             	break;
             }
@@ -286,6 +287,7 @@ public class ConnectionImpl extends AbstractConnection {
         	System.out.println("Wrong source port, retry:");
         else {		        //more, check destination address?
         	System.out.println("Packet is valid");
+        	lastValidPacketReceived=packet;
         	return true; //passed all tests :)
         }
     	
