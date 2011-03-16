@@ -213,7 +213,26 @@ public class ConnectionImpl extends AbstractConnection {
      * @see no.ntnu.fp.net.co.Connection#send(String)
      */
     public void send(String msg) throws ConnectException, IOException {
-        //throw new NotImplementedException();
+    	System.out.println("Trying to send message: " + msg);
+    	if(state!=State.ESTABLISHED)throw new ConnectException("Cannot send: Connection not established.");
+    	KtnDatagram packet = constructDataPacket(msg);
+    	boolean sendOk=false;
+    	for(int i=0; i<3 && !sendOk; i++){
+    		KtnDatagram ack=sendDataPacketWithRetransmit(packet);
+    		if(ack == null){
+    			System.out.println("No packet received");
+    		}
+    		else if(ack.getFlag()!=Flag.ACK){
+    			System.out.println("Not an ack!");
+    		}
+    		else if(isValid(ack)){
+    			System.out.println("Corresponding ack received");
+    			sendOk=true;
+    		}
+    		else {
+    			System.out.println("Wrong ackpacket received");
+    		}
+    	}
     }
 
     /**
@@ -225,8 +244,15 @@ public class ConnectionImpl extends AbstractConnection {
      * @see AbstractConnection#sendAck(KtnDatagram, boolean)
      */
     public String receive() throws ConnectException, IOException {
-        //throw new NotImplementedException();
-    	return null;
+        while(true){
+        	KtnDatagram datapacket = receivePacket(false);
+            if(isValid(datapacket)){
+            	lastValidPacketReceived=datapacket;
+            	sendAck(lastValidPacketReceived, false);
+            	break;
+            }
+        }
+    	return lastValidPacketReceived.toString();
     }
 
     /**
