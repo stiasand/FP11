@@ -53,7 +53,7 @@ public class ContactsPanel extends JPanel implements ListSelectionListener{
 		
 		//adding a scroll pane to the JList
 		employeeScrollPane = new JScrollPane(employeeList);
-		employeeScrollPane.setPreferredSize(new Dimension(200,100));
+		employeeScrollPane.setPreferredSize(new Dimension(350,200));
 		employeeScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		employeeScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
