@@ -36,7 +36,6 @@ public class CalendarSwitcher extends JPanel implements PropertyChangeListener {
 	}
 
 	public void setCalendar(Calendar calendar){
-		System.out.println(calendar.get(Calendar.DATE));
 		if (calendar.equals(this.calendar)) return;
 		propertyChange.firePropertyChange("calendar", this.calendar,
 				calendar);
