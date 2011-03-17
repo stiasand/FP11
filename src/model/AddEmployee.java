@@ -5,12 +5,22 @@ public class AddEmployee implements Action {
 	Employee employee;
 
 	@Override
-	public void performServerAction() {
-		// Ask database to insert the employee
-		// If the insertion was successful, send AddEmployee to every client
-	}
-	@Override
 	public void performClientAction() {
 		// Change model
 	}
+	public void performServerAction(){
+		//try to change database
+		//if successful
+		//	change model
+		//	send action to clients
+	}
+	
+	public String toXML(){
+		return "";
+	}
+	public AddEmployee fromXML(String xml){
+		return this;
+	}
 }
+
+
