@@ -172,9 +172,13 @@ public class ConnectionImpl extends AbstractConnection {
         	System.out.println("Sending synack: ");
         	sendAck(synPacket, true);
         	//wait for ack
-	        while(!connectOk){
-		        KtnDatagram datagram=receivePacket(true);
+	        for(int j=0; j<3 && !connectOk; j++){
+		        KtnDatagram datagram=receiveAck();
 		        connectOk=isValid(datagram);
+		        if(connectOk && datagram.getFlag()!=Flag.ACK){
+		        	System.out.println("Not an ack");
+		        	connectOk=false;
+		        }
 		        //more, check destination address?
 	        }
         }
@@ -280,11 +284,11 @@ public class ConnectionImpl extends AbstractConnection {
     	else if(packet==null)
         	System.out.println("No datagram received");
         else if(packet.getFlag()==Flag.ACK && packet.getAck()!=nextSequenceNo-1)
-        	System.out.println("Wrong ack, retry:");
+        	System.out.println("Wrong ack");
         else if(!packet.getSrc_addr().equals(remoteAddress))
-        	System.out.println("Wrong source address, retry:");
+        	System.out.println("Wrong source address");
         else if(packet.getSrc_port()!=remotePort)
-        	System.out.println("Wrong source port, retry:");
+        	System.out.println("Wrong source port");
         else {		        //more, check destination address?
         	System.out.println("Packet is valid");
         	lastValidPacketReceived=packet;
