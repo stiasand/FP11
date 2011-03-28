@@ -1,2 +1,6 @@
 11.3: 10-14 ktn (sekvensdiagrammer)
 11.3: 16-18 ktn (sekvensdiagrammer, (tekstlig beskrivelse))
+14.3: 1020-1120 fiksa sekvensdiagrammer
+14.3: 1200-1500 begynt på nettverksimplementasjon accept og connect
+16.3: 1200-1620 mer nettverksimplementasjon, var nesten ferdig, men eclipse fucka alt rett før jeg skulle committe
+28.3: 1200-1800 Litt ktn1, sql-skjemaer
