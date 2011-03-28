@@ -1,4 +1,5 @@
 --slett gamle tabeller som er i veien
+DROP VIEW V_meetings;
 DROP TABLE attends;
 DROP TABLE meetings;
 DROP TABLE appointments;
@@ -56,4 +57,10 @@ CREATE TABLE attends(
 		REFERENCES meetings(id),
 	CONSTRAINT pk_attends PRIMARY KEY (username, meetingId)
 );
+
+CREATE VIEW V_meetings(id, employee, addedDate, startDate, endDate, description, location, room)
+AS SELECT appointments.id, employee, addedDate, startDate, endDate, description, location, room
+FROM appointments
+JOIN meetings ON appointments.id=meetings.id;
+
 
