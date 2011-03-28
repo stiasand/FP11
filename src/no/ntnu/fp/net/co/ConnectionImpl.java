@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -51,15 +52,21 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
      * @param myPort
      *            - the local port to associate with this connection
      */
-    public ConnectionImpl(int myPort) {
+    private void reservePort(int port){
     	// check if port is already used, and add to map
     	if(usedPorts.containsKey(myPort) && usedPorts.get(myPort)){
     		//port already taken, throw exception/return?
     		System.out.println("Port already taken!!!");
     		throw new Error();
-    	} // TODO find a way to free the port afterwards
-    	else usedPorts.put(myPort, true);
-    	
+    	}
+    	else{
+    		System.out.println("Port "+ port+ " reserved.");
+    		usedPorts.put(myPort, true);
+    	}
+    }
+    
+    public ConnectionImpl(int myPort) {
+    	reservePort(myPort);
 		this.myPort=myPort;
 		myAddress=getIPv4Address();
 		nextSequenceNo=(int)(Math.random()*2147400000);
@@ -102,13 +109,12 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     	//send synpacket until synack is received
     	boolean synackOk=false;
     	KtnDatagram ackPacket=null;
-    	for(int i=0; i<CONNECTRETRIES && !synackOk; i++){//TODO counter i.e. try to connect three times, then throw exception
-    		Timer timer = new Timer();
-    		timer.scheduleAtFixedRate(sendTimer, 0, RETRANSMIT);
-    		state=State.SYN_SENT;
-    		
-			//TODO wait here?
-    		
+    	
+    	Timer timer = new Timer();
+		timer.scheduleAtFixedRate(sendTimer, 0, RETRANSMIT);
+		state=State.SYN_SENT;
+		long startTime=new Date().getTime();
+		while(startTime+TIMEOUT > new Date().getTime() && !synackOk){//TODO counter i.e. try to connect three times, then throw exception
     		
     		ackPacket=receiveAck(); //wrap in a while/timer?
     		//check ackpacket for errors
@@ -128,9 +134,8 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     			System.out.println("Valid synack received.");
     			synackOk=true;
     		}
-    		
-    		timer.cancel();
     	}
+		timer.cancel();
     	
     	if(!synackOk){
     		System.out.println("Connection timed out");
