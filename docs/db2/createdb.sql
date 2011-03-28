@@ -37,7 +37,7 @@ CREATE TABLE appointments(
 
 CREATE TABLE meetings(
 	id INTEGER NOT NULL,
-	room VARCHAR(30) NOT NULL,
+	room VARCHAR(30),
 	CONSTRAINT pk_meetingsId PRIMARY KEY (id),
 	CONSTRAINT fk_meetingsId FOREIGN KEY (id)
 		REFERENCES appointments(id), --litt usikker på hvordan "arv" fungerer i sql...
