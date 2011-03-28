@@ -35,7 +35,11 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  * @see no.ntnu.fp.net.co.Connection
  * @see no.ntnu.fp.net.cl.ClSocket
  */
-public class ConnectionImpl extends AbstractConnection {
+public class ConnectionImpl extends AbstractConnection implements Cloneable {
+	
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+	}
 
     private static final int CONNECTRETRIES = 3;
 	/** Keeps track of the used ports for each server port. */
@@ -188,20 +192,22 @@ public class ConnectionImpl extends AbstractConnection {
         	throw new ConnectException("Wait for ack timed out");
         }
         
-        System.out.println("\nConnection Accepted!!!\n");
-        state=State.ESTABLISHED;
-//        //free resources
-//        state=State.CLOSED;
-//        usedPorts.put(myPort, false);
+        //connection accepted
+        ConnectionImpl connection=null;
+        try {
+			connection=(ConnectionImpl)this.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
-        //create a new connection with correct attributes
-//        ConnectionImpl connection = new ConnectionImpl(myPort); //port collisions?
-//        connection.remoteAddress=synPacket.getSrc_addr();
-//        connection.remotePort=synPacket.getSrc_port();
-//        connection.myAddress=myAddress;
-//        connection.state=State.ESTABLISHED;
+        System.out.println("\nConnection Accepted!!!\n");
+        connection.state=State.ESTABLISHED;
+        //free resources
+        state=State.CLOSED;
+        //usedPorts.put(myPort, false);
  
-    	return this;
+    	return connection;
     }
 
     /**
