@@ -14,8 +14,11 @@ import java.util.List;
  */
 public abstract class Database {
 	private static Connection con;
-	public static final String database = "db"; // Databasenavn
+	public static final String DATABASE = "db"; // Databasenavn
 	
+	/**
+	 * Return type som brukes for modify metoden
+	 */
 	public static enum ReturnType {
 		ID, ROWS
 	}
@@ -144,10 +147,10 @@ public abstract class Database {
 	 */
 	private static void connect(Boolean force) {
 		try {
-			if ((con == null) || con.isClosed() || force) { 
+			if ((con == null) || con.isClosed() || force) {
 				System.out.println("New connection established");
 				Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-				con = DriverManager.getConnection("jdbc:derby:" + database);
+				con = DriverManager.getConnection("jdbc:derby:" + DATABASE);
 			}
 		} catch (Exception e) {
 			// TODO: Handle failed connect
