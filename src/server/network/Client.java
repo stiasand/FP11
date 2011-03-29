@@ -56,7 +56,7 @@ public class Client implements Runnable {
 	}
 	
 	/**
-	 * Runs a pingpong to the client. If no answer it closes the connection
+	 * Runs a pingpong to the client. If no response it closes the connection
 	 */
 	public void pingpong() {
 		BufferedReader in = null;

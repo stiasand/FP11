@@ -4,11 +4,14 @@ import java.io.*;
 import java.net.*;
  
 public class Client {
+	private static Socket socket = null;
+    private static PrintWriter out = null;
+    private static BufferedReader in = null;
+    private static BufferedReader read = null;
+	
     public static void main(String[] args) throws IOException {
  
-        Socket socket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+        
  
         try {
             socket = new Socket("127.0.0.1", 123);
@@ -22,8 +25,8 @@ public class Client {
             System.exit(1);
         }
  
-        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
-        String num1,num2;
+        read = new BufferedReader(new InputStreamReader(System.in));
+        //String num1,num2;
  
 		//System.out.println(in.readLine()); //Uncomment to debug
         boolean run = true;
@@ -53,4 +56,16 @@ public class Client {
         read.close();
         socket.close();
     }
+    
+	protected void finalize() {
+		try {
+	        out.close();
+	        in.close();
+	        read.close();
+	        socket.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+    
 }
