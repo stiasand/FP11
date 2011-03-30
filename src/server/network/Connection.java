@@ -2,6 +2,8 @@ package server.network;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +16,7 @@ import java.nio.channels.SocketChannel;
 /**
  * FROM http://www.oracle.com/technetwork/java/socket-140484.html
  */
-public class Connection extends Thread {
+public class Connection extends Thread implements PropertyChangeListener {
 	public static final int PORT = 123;
 	private ServerSocket server = null;
 	private boolean running = false;
@@ -46,12 +48,14 @@ public class Connection extends Thread {
         while (running) {
         	try {
 	        	Client client = new Client(server.accept());
+	        	
 	        	if (client != null) {
+	        		client.addPropertyChangeListener(this);
 	        		System.out.println(client);
 	        		clients.add(client);
+	        		Thread t = new Thread(client);
+		        	t.start();
 	        	}
-	        	Thread t = new Thread(client);
-	        	t.start();
         	} catch (Exception e) { // IOException
         		System.out.println(e.getMessage());
         	}
@@ -65,13 +69,39 @@ public class Connection extends Thread {
 	}
 	
 	/**
-	 * Releases all Socket resources on program termination
+	 * Closes the connection
 	 */
-	protected void finalize() {
+	public void close() {
+		for (int i = 0; i < clients.size(); i++) {
+			clients.get(i).close();
+		}
+		
 		try {
 			server.close();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Releases all Socket resources on life termination
+	 */
+	protected void finalize() {
+		close();
+	}
+
+	/**
+	 * Listens for events on the Client sockets
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName() != null) {
+			if (evt.getPropertyName().equals(Client.CLOSING_PROPERTY)) {
+				// Removes the corresponding socket
+				if (clients.contains(evt.getSource())) {
+					clients.remove(((Client)evt.getSource()));
+				}
+			}
 		}
 	}
 }

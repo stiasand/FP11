@@ -37,6 +37,10 @@ public class Client {
         	} else {
         		run = false;
         	}
+        	String reply = in.readLine();
+        	if (reply != null) {
+        		System.out.println(reply);
+        	}
         }
         	
         /*
