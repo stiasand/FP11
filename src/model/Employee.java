@@ -7,9 +7,17 @@ public class Employee {
 
 	private String username, password;
 	
+	public Employee(String username) {
+		this.username = username;
+	}
+
 	private Calendar calendar;
 	
 	public boolean verifyPassword(String password){
 		return this.password.equals(password);
+	}
+	
+	public String toString() {
+		return username;
 	}
 }

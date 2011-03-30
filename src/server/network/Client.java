@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import model.Appointment;
 import model.Employee;
 import model.Room;
 
@@ -184,26 +185,41 @@ public class Client implements Runnable {
 				// TODO: Read XML from "message" into these vars
 				String id = "";
 				String addedBy = ""; // Employees-> username
+				String addedDate = "";
 				String startDate = "";
 				String endDate = "";
 				String description = "";
 				String location = "";
-				String roomName = ""; // Rooms-> name
+				String room_Name = ""; // Rooms-> name
+				String room_Size = "";
+				String room_Description = "";
 				
-				String sqlAppointments = "UPDATE Appointments SET startDate = ?, endDate = ?, description = ?, location = ? WHERE id = ?";
-				String[] paramsAppointments = {startDate, endDate, description, location, id};
-				int rowsAppointments = Database.modify(sqlAppointments, paramsAppointments, Database.ReturnType.ROWS);
-				
-				String sqlMeetings = "UPDATE Meetings SET room = ? WHERE id = ?";
-				String[] paramsMeetings = {roomName, id};
-				int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
-				
-				if (rowsAppointments != 0 || rowsMeetings != 0) {
-					// TODO: Return XML-object that was created by this event
-					return "";
-				} else {
-					// TODO: Return XML-object for FAILURE
-					return "";
+				try {
+					Employee employee = new Employee(addedBy);
+					Room room = new Room(room_Name, Integer.parseInt(room_Size), room_Description);
+					Appointment appointment = new Appointment(Integer.parseInt(id), employee, new Date(addedDate), 
+							new Date(startDate), new Date(endDate), description, location, room);
+					
+					String sqlAppointments = "UPDATE Appointments SET startDate = ?, endDate = ?, description = ?, location = ? WHERE id = ?";
+					String[] paramsAppointments = {appointment.getStartDate().toString(), appointment.getEndDate().toString(), 
+							appointment.getDescription(), appointment.getLocation(), String.valueOf(appointment.getId())};
+					int rowsAppointments = Database.modify(sqlAppointments, paramsAppointments, Database.ReturnType.ROWS);
+					
+					String sqlMeetings = "UPDATE Meetings SET room = ? WHERE id = ?";
+					String[] paramsMeetings = {roomName, id};
+					int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
+					
+					if (rowsAppointments != 0 || rowsMeetings != 0) {
+						// TODO: Return XML-object that was created by this event
+						return "";
+					} else {
+						throw new Exception("Error: Possible XML-failure");
+					}
+					
+				} catch (Exception e) {
+					System.out.println(e.getMessage()); // TODO Remove on release
+					// Return ERROR-object (XML-Error)
+					return null;
 				}
 			} else if (event.equals("RemoveAppointment")) {
 				// TODO: Read XML from "message" into these vars
