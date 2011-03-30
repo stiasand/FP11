@@ -7,16 +7,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import model.Employee;
+import model.Room;
+
+import server.database.Database;
 
 public class Client implements Runnable {
 	public static final String CLOSING_PROPERTY = "Closing";
 	public static final String MESSAGE_OK = "OK!";
 	public static final String MESSAGE_FAIL = "FAIL!";
+	public static final String MESSAGE_NOTRECOGNIZED = "NOT RECOGNIZED!";
+	public static final String[] VALID_EVENTS = {"AddAppointment", "EditAppointment", "RemoveAppointment", 
+		"GetAppointsments", "GetEmployeeList", "GetRoom", "GetAvailiableRooms", "Login"};
 	public static final int SLEEP = 50;
 	private Socket client;
 	private boolean running = false;
 	private long tick;
-	private String auth = "";
+	private String auth = null;
 	
 	private BufferedReader in = null;
 	private PrintWriter out = null;
@@ -93,56 +105,149 @@ public class Client implements Runnable {
 	private String message(String message) {
 		tick = System.currentTimeMillis();
 		
-		if (message.equals("close")) {
+		if (message.toLowerCase().equals("close")) {
 			close();
-		} else if (isEvent("AddAppointment", message)) {
-			boolean executed = executeEvent(message);
-			if (executed) {
-				return Client.MESSAGE_OK;
+		}
+		else {
+			String event = getEvent(message);
+			if (Arrays.asList(VALID_EVENTS).contains(event)) {
+				return executeEvent(event, message);
 			} else {
-				return Client.MESSAGE_FAIL;
+				// TODO: Remove this else.
+				return "Reply to: " + message;
 			}
-		} else if (isEvent("EditAppointment", message)) {
-			boolean executed = executeEvent(message);
-			if (executed) {
-				return Client.MESSAGE_OK;
-			} else {
-				return Client.MESSAGE_FAIL;
-			}
-		} else if (isEvent("RemoveAppointment", message)) {
-			boolean executed = executeEvent(message);
-			if (executed) {
-				return Client.MESSAGE_OK;
-			} else {
-				return Client.MESSAGE_FAIL;
-			}
-		} else if (isEvent("GetAppointsments", message)) {
-			return getEvent(message);
-		} else {
-			return "Reply to: " + message;
 		}
 		
-		return null;
+		// TODO: Return XMl-object for NOTRECOGNIZED
+		return Client.MESSAGE_NOTRECOGNIZED;
 	}
 	
 	/**
-	 * Checks if the given message is 
-	 * @param event
-	 * @param message
-	 * @return
+	 * @param message Message (XML)
+	 * @return Event name in the message
 	 */
-	private boolean isEvent(String event, String message) {
-		return false;
-	}
-	
-	private boolean executeEvent(String message) {
-		return false;
-	}
-	
 	private String getEvent(String message) {
 		return "";
 	}
 	
+	/**
+	 * Executes the given event with the given values from message
+	 * @param event Event to execute
+	 * @param message Message with values for the event
+	 * @return Reply message to Client
+	 */
+	private String executeEvent(String event, String message) {
+		if (event != null) {
+			if (event.equals("Login")) {
+				// TODO: Read XML from "message" into these vars
+				String username = "";
+				String password = "";
+				
+				String sql = "SELECT * FROM Employees WHERE username = ? AND password = ?";
+				String[] params = {username, password};
+				List<HashMap<String, String>> res = Database.retrieve(sql, params);
+				if (res.size() > 0) {
+					// User was authorized via login
+					auth = username;
+					// TODO: Return XML-object that was created by this event
+					return "";
+				}
+			} else if (event.equals("AddAppointment")) {
+				// TODO: Read XML from "message" into these vars
+				String addedBy = ""; // Employees-> username
+				String startDate = "";
+				String endDate = "";
+				String description = "";
+				String location = "";
+				String roomName = ""; // Rooms-> name
+				
+				// TODO: Possible bug: will this set addedDate to now() or not?
+				String sql = "INSERT INTO Appointments (employee, startDate, endDate, description, location) VALUES (?, ?, ?, ?, ?)";
+				String[] params = {addedBy, startDate, endDate, description, location};
+				int id = Database.modify(sql, params, Database.ReturnType.ID);
+				int rows = 0;
+				
+				if (id != 0) {
+					sql = "INSERT INTO Meetings (id, room) VALUES (?, ?)";
+					String[] paramsMeeting = {String.valueOf(id), roomName};
+					rows = Database.modify(sql, paramsMeeting, Database.ReturnType.ROWS);
+				}
+				
+				if (id != 0 && rows != 0) {
+					// TODO: Return XML-object that was created by this event
+					return "";
+				} else {
+					// TODO: Return XML-object for FAILURE
+					return "";
+				}
+			} else if (event.equals("EditAppointment")) {
+				// TODO: Read XML from "message" into these vars
+				String id = "";
+				String addedBy = ""; // Employees-> username
+				String startDate = "";
+				String endDate = "";
+				String description = "";
+				String location = "";
+				String roomName = ""; // Rooms-> name
+				
+				String sqlAppointments = "UPDATE Appointments SET startDate = ?, endDate = ?, description = ?, location = ? WHERE id = ?";
+				String[] paramsAppointments = {startDate, endDate, description, location, id};
+				int rowsAppointments = Database.modify(sqlAppointments, paramsAppointments, Database.ReturnType.ROWS);
+				
+				String sqlMeetings = "UPDATE Meetings SET room = ? WHERE id = ?";
+				String[] paramsMeetings = {roomName, id};
+				int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
+				
+				if (rowsAppointments != 0 || rowsMeetings != 0) {
+					// TODO: Return XML-object that was created by this event
+					return "";
+				} else {
+					// TODO: Return XML-object for FAILURE
+					return "";
+				}
+			} else if (event.equals("RemoveAppointment")) {
+				// TODO: Read XML from "message" into these vars
+				String id = "";
+				
+				String sqlAppointments = "DELETE FROM Appointments WHERE id = ?";
+				String[] paramsAppointments = {id};
+				int rowsAppointments = Database.modify(sqlAppointments, paramsAppointments, Database.ReturnType.ROWS);
+				
+				String sqlMeetings = "DELETE FROM Meetings WHERE id = ?";
+				String[] paramsMeetings = {id};
+				int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
+				
+				if (rowsAppointments != 0 && rowsMeetings != 0) {
+					// TODO: Return XML-object that was created by this event
+					return "";
+				} else {
+					// TODO: Return XML-object for FAILURE
+					return "";
+				}
+			} else if (event.equals("GetAppointsments")) {
+				// TODO: Read XML from "message" into these vars
+				String employee_username = "";
+				
+				String sql = "SELECT * FROM Appointments WHERE employee = ?";
+				String[] params = {employee_username};
+				
+				List<HashMap<String, String>> res = Database.retrieve(sql, params);
+				for (HashMap<String, String> hm : res) {
+					// TODO: Create Appointment objects
+					//hm.get("name"));
+				}
+				
+				if (res.size() > 0) {
+					// TODO: Return one XML-object with all Appointment XML-objects that were made 
+				} else {
+					// TODO: Return XML-object for FAILURE
+				}
+			}
+		}
+		
+		return null;
+	}
+
 	/**
 	 * @return If Socket is open or not
 	 */

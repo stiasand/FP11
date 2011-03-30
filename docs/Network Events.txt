@@ -1,0 +1,22 @@
+AddAppointment(appointment)
+	<AddAppointment>
+		<Appointment>
+			<creator>...</creator>
+			<...>
+EditAppointment(appointment)
+RemoveAppointment(appointment_id)
+	<RemoveAppointment>
+		<id>...</id>
+	</RemoveAppointment>
+GetAppointsments(employee_id)
+GetEmployeeList()
+GetRoom()
+GetAvailiableRooms(...)
+Login(username, password)
+
+
+Fail:
+<Event>
+<Type>Fail</Type>
+<Message>...</Message>
+</Event>
