@@ -83,7 +83,7 @@ public class Client implements Runnable {
 					String reply = message(message);
 					System.out.println("Reply is " + reply);
 					if (reply != null) {
-						out.println(reply);
+						out.println(reply + "\n");
 					}
 				}
 			} catch (Exception e) { // IOException
@@ -106,22 +106,17 @@ public class Client implements Runnable {
 	 */
 	private String message(String message) {
 		tick = System.currentTimeMillis();
+		String event = getEvent(message);
 		
 		if (message.toLowerCase().equals("close")) {
 			close();
+			return null;
+		} else if (Arrays.asList(VALID_EVENTS).contains(event)) {
+			return executeEvent(event, message);
+		} else {
+			// TODO: Return XMl-object for NOTRECOGNIZED
+			return Client.MESSAGE_NOTRECOGNIZED;
 		}
-		else {
-			String event = getEvent(message);
-			if (Arrays.asList(VALID_EVENTS).contains(event)) {
-				return executeEvent(event, message);
-			} else {
-				// TODO: Remove this else.
-				return "Reply to: " + message;
-			}
-		}
-		
-		// TODO: Return XMl-object for NOTRECOGNIZED
-		return Client.MESSAGE_NOTRECOGNIZED;
 	}
 	
 	/**
