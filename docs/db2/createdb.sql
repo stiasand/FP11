@@ -25,7 +25,7 @@ CREATE TABLE rooms(
 CREATE TABLE appointments(
 	id INTEGER GENERATED ALWAYS AS IDENTITY,
 	employee VARCHAR(30) NOT NULL,
-	addedDate TIMESTAMP NOT NULL,
+	addedDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	startDate TIMESTAMP NOT NULL,
 	endDate TIMESTAMP NOT NULL,
 	description CLOB, --character large object, kan vi klare oss med varchar?
