@@ -38,6 +38,7 @@ public class Model{
 		System.out.println(employees.get(2));
 		appointments.add(new Meeting(0,null,employees, null, null, null, null, null, null));
 		
+		rooms.add(new Room("P15",14,"Gl¿s en plass"));
 		pcs = new PropertyChangeSupport(this);
 		
 		

@@ -1,5 +1,6 @@
 package client.gui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -23,6 +24,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
@@ -56,6 +58,12 @@ public class NewAppointmentPanel extends JFrame{
 //	private JTextField txtEndTime = new JTextField(5);
 	private JSpinner spinnerEndTimeDate = new JSpinner();
 	private JSpinner spinnerEndTimeHours = new JSpinner();
+	
+	//create spinner models
+	private SpinnerDateModel modelEndTime = new SpinnerDateModel();
+	private SpinnerDateModel modelStartTime = new SpinnerDateModel();
+	private SpinnerDateModel modelStartDate = new SpinnerDateModel();
+	private SpinnerDateModel modelEndDate = new SpinnerDateModel();
 
 	private JComboBox cmbPlace = new JComboBox();
 	private JComboBox cmbParticipants = new JComboBox();
@@ -65,6 +73,7 @@ public class NewAppointmentPanel extends JFrame{
 
 	DefaultListModel participantsListModel= new DefaultListModel();
 	JList lstParticipants = new JList(participantsListModel);
+	JScrollPane participantsScrollPane = new JScrollPane(lstParticipants);
 
 	private Model model;
 	private DefaultComboBoxModel roomComboBoxModel; 
@@ -93,14 +102,11 @@ public class NewAppointmentPanel extends JFrame{
 		//add keyListener to textFields and lists
 		lstParticipants.addKeyListener(myKeyListener);
 
-		//create spinner models
-		SpinnerDateModel modelEndTime = new SpinnerDateModel();
-		SpinnerDateModel modelStartTime = new SpinnerDateModel();
-		SpinnerDateModel modelStartDate = new SpinnerDateModel();
-		SpinnerDateModel modelEndDate = new SpinnerDateModel();
-		modelEndTime.setCalendarField(Calendar.MINUTE);
-		modelStartTime.setCalendarField(Calendar.MINUTE);
+		//set calendar fields
 		modelStartDate.setCalendarField(Calendar.DATE);
+		modelStartTime.setCalendarField(Calendar.MINUTE);
+		modelEndDate.setCalendarField(Calendar.DATE);
+		modelEndTime.setCalendarField(Calendar.MINUTE);
 		
 		//set models and editors to spinners
 		spinnerStartTimeHours.setModel(modelStartTime);
@@ -112,6 +118,10 @@ public class NewAppointmentPanel extends JFrame{
 		spinnerStartTimeDate.setEditor(new JSpinner.DateEditor(spinnerStartTimeDate, "dd/MM/yyyy"));
 		spinnerEndTimeDate.setEditor(new JSpinner.DateEditor(spinnerEndTimeDate, "dd/MM/yyyy"));
 
+		//adding a scroll pane to the JList
+		participantsScrollPane.setPreferredSize(new Dimension(350,200));
+		participantsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		participantsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 		
 
@@ -181,7 +191,7 @@ public class NewAppointmentPanel extends JFrame{
 		//new Insets(top, left, bottom, right)
 		c.gridwidth=GridBagConstraints.REMAINDER;
 		c.fill=GridBagConstraints.BOTH;
-		add(lstParticipants, c);
+		add(participantsScrollPane, c);
 		c.ipady=0;
 		c.insets=new Insets(0, 1, 1, 1);
 
@@ -205,9 +215,29 @@ public class NewAppointmentPanel extends JFrame{
 				//closing the window
 				dispose();
 			}else if(btnConfirm.isFocusOwner()){
+				//added date
+				Date addedDate = new Date();
+				
+				//get startDate
+				Date sDate = modelStartDate.getDate();
+				Date sTime = modelStartTime.getDate();
+				Date sd = new Date(sDate.getTime() + sTime.getTime());
+//				System.out.println(sDate);
+//				System.out.println(sTime);
+//				System.out.println(sd.getTime());
+//				System.out.println(sDate.getTime() + sTime.getTime());
+				
+				//get endDate
+				Date eDate = modelEndDate.getDate();
+				Date eTime= modelEndTime.getDate();
+				Date ed = new Date(eDate.getTime() + eTime.getTime());
+				
+				//get description
+				String description = txtDescription.getText();
 				if(participantsListModel.isEmpty()){
-
+					
 				}else{
+//					Meeting m = new Meeting(-1,null,participantsListModel,addedDate,sd,ed,description,);
 					
 				}
 				//meeting
@@ -259,12 +289,5 @@ public class NewAppointmentPanel extends JFrame{
 		frame.pack();
 		frame.setVisible(true);
 	}
-//	class MyDateEditor extends DateEditor{
-//
-//		public MyDateEditor(JSpinner arg0, String arg1) {
-//			super(arg0, arg1);
-//			// TODO Auto-generated constructor stub
-//		}
-//		
-//	}
+
 }

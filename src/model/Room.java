@@ -38,7 +38,9 @@ public class Room {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+	public String toString(){
+		return name + "("+size+")";
+	}
 	
 	
 }
