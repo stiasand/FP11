@@ -23,11 +23,23 @@ Fail:
 
 
 ALSO:
+AddMeeting(appointment, employees)
+EditMeeting(appointment, employees)
+RemoveMeeting(appointment)
+GetMeetings(employee)
+
+	
+
+
 GetMessages(...)
 AddAttendees(appointment, employees)
 GetAttendees(appointment)
 ReplyAttending(appointment, employee, answer)
 
-Do messages through Server.network.Connection and do it via the listener. 
+1) Do messages through Server.network.Connection and do it via the listener. 
 	When a message is to be sent just send a changeEvent and Connection will handle it
 	and send the message through Client.sendMessage(message) for all connected clients
+
+
+2) Remember we need to keep everything updated on all Clients so when a change occurs it needs to
+	be pushed to all affected connected Clients

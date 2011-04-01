@@ -3,7 +3,9 @@ package xml;
 import java.util.Date;
 
 import model.Appointment;
+import model.Attending;
 import model.Employee;
+import model.Meeting;
 import model.Room;
 
 public abstract class XMLHandler {
@@ -80,7 +82,7 @@ public abstract class XMLHandler {
 	 * @throws Exception
 	 */
 	public static Employee createEmployee(String xml) throws Exception {
-		// TODO: Read XML from "message" into these vars
+		// TODO: Read XML from "xml" into these vars
 		String username = "";
 		String password = "";
 		String name = "";
@@ -97,6 +99,28 @@ public abstract class XMLHandler {
 	}
 	
 	/**
+	 * Creates a Meeting object from the given XML
+	 * @param xml Meeting-data
+	 * @return Meeting object with values from the XML
+	 * @throws Exception
+	 */
+	public static Meeting createMeeting(String xml) throws Exception {
+		// TODO: Implement
+		return null;	
+	}
+	
+	/**
+	 * Creates a Attending object from the given XML
+	 * @param xml Attending-data
+	 * @return Attending object with values from the XML
+	 * @throws Exception
+	 */
+	public static Attending createAttending(String xml) throws Exception {
+		// TODO: Implement
+		return null;
+	}
+	
+	/**
 	 * Creates a finished XML with and event and subnodes
 	 * @param event Event name
 	 * @param xml XML
@@ -104,6 +128,15 @@ public abstract class XMLHandler {
 	 */
 	public static String createXml(String event, String xml) {
 		// TODO: Implement
+		return "";
+	}
+	
+	/**
+	 * Creates XML out of a Meeting Object
+	 * @param meeting Meeting object
+	 * @return XML
+	 */
+	public static String createXml(Meeting meeting) {
 		return "";
 	}
 		

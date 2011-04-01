@@ -62,5 +62,3 @@ CREATE VIEW V_meetings(id, employee, addedDate, startDate, endDate, description,
 AS SELECT appointments.id, employee, addedDate, startDate, endDate, description, location, room
 FROM appointments
 JOIN meetings ON appointments.id=meetings.id;
-
-
