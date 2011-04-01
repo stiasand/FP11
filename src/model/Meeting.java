@@ -5,11 +5,30 @@ import java.util.List;
 
 public class Meeting extends Appointment {
 	protected List<Attending> attending;
+	protected Room room;
+	
 	public Meeting(int id, Employee addedBy, Employees employees, Date addedDate, Date startDate,
 			Date endDate, String description, String location, Room room) {
-		super(id, addedBy, addedDate, startDate, endDate, description, location, room);
+		super(id, addedBy, addedDate, startDate, endDate, description, location);
+		this.room = room;
 	}
 	
+	public Room getRoom() {
+		return room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+	
+	public List<Attending> getAttending() {
+		return attending;
+	}
+
+	public void setAttending(List<Attending> attending) {
+		this.attending = attending;
+	}
+
 	public void cancel(){
 		
 	}
@@ -19,5 +38,4 @@ public class Meeting extends Appointment {
 	public void discard(Employee employee){
 		
 	}
-
 }

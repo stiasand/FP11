@@ -12,11 +12,9 @@ public class Appointment {
 	protected Date startDate, endDate;
 	protected String description;
 	protected String location;
-	protected Room room;
 	
 	public Appointment(int id, Employee addedBy, Date addedDate,
-			Date startDate, Date endDate, String description, String location,
-			Room room) {
+			Date startDate, Date endDate, String description, String location) {
 		this.id = id;
 		this.addedBy = addedBy;
 		this.addedDate = addedDate;
@@ -24,7 +22,6 @@ public class Appointment {
 		this.endDate = endDate;
 		this.description = description;
 		this.location = location;
-		this.room = room;
 	}
 	
 	public int getId() {
@@ -82,14 +79,7 @@ public class Appointment {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-
-	public Room getRoom() {
-		return room;
-	}
-
-	public void setRoom(Room room) {
-		this.room = room;
-	}
+	
 	@Override
 	public String toString(){
 		return description;

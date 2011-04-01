@@ -36,3 +36,5 @@ Fail:
 
 1.1) Remember we need to keep everything updated on all Clients so when a change occurs it needs to
 	be pushed to all affected connected Clients
+
+2) An Appointment has no Room, only a Meeting has a Room

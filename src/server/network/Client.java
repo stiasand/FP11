@@ -313,7 +313,7 @@ public class Client implements Runnable {
 					for (int i = 0; i < employees.size(); i++) {
 						data += xml.XMLHandler.createXml(employees.get(i));
 					}
-					
+					//TODO: (Critical) This event is not the event the Client will be looking for FIX everywhere!
 					return xml.XMLHandler.createXml(event, data);
 				} else {
 					return getReplyEvent(EVENT_REPLY.FAIL, "No employees found");

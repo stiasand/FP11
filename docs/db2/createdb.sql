@@ -7,7 +7,7 @@ DROP TABLE rooms;
 DROP TABLE employees;
 
 
-CREATE TABLE employees(
+CREATE TABLE Employees(
 	username VARCHAR(30) NOT NULL,
 	name VARCHAR(60),
 	password VARCHAR(20),
@@ -15,14 +15,14 @@ CREATE TABLE employees(
 );
 
 
-CREATE TABLE rooms(
+CREATE TABLE Rooms(
 	name VARCHAR(30) NOT NULL,
 	size INTEGER,
 	description CLOB,
 	CONSTRAINT pk_roomsName PRIMARY KEY (name)
 );	
 
-CREATE TABLE appointments(
+CREATE TABLE Appointments(
 	id INTEGER GENERATED ALWAYS AS IDENTITY,
 	employee VARCHAR(30) NOT NULL,
 	addedDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -36,7 +36,7 @@ CREATE TABLE appointments(
 );
 
 
-CREATE TABLE meetings(
+CREATE TABLE Meetings(
 	id INTEGER NOT NULL,
 	room VARCHAR(30),
 	CONSTRAINT pk_meetingsId PRIMARY KEY (id),
@@ -46,7 +46,7 @@ CREATE TABLE meetings(
 		REFERENCES rooms (name)
 );
 
-CREATE TABLE attends(
+CREATE TABLE Attends(
 	username VARCHAR(30) NOT NULL,
 	meetingId INTEGER NOT NULL,
 	acceptanceStatus INTEGER NOT NULL,
