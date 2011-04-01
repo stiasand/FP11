@@ -13,6 +13,11 @@ public class Meeting extends Appointment {
 		this.room = room;
 	}
 	
+	@Override
+	public void setLocation(String location) {
+		super.location = room.name;
+	}
+	
 	public Room getRoom() {
 		return room;
 	}
