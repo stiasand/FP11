@@ -1,4 +1,4 @@
-package client.gui;
+package client.gui.calendarpanel;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import javax.swing.JPanel;
 
-class CalendarPanel extends JPanel {
+public class CalendarPanel extends JPanel {
 	public static final Locale locale = new Locale("no");
 	public static final int millisWidth = 1000 * 60 * 60 * 24; // day
 	public static final int millisHeight = 1000 * 60 * 15; // quarter

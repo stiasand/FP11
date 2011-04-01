@@ -15,6 +15,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import client.gui.datepicker.DatePicker;
+import client.gui.calendarpanel.*;
 
 public class CalendarProgram implements PropertyChangeListener {
 	private static CalendarPanel calendarPanel;
@@ -22,6 +23,7 @@ public class CalendarProgram implements PropertyChangeListener {
 	private static DatePicker datePicker;
 	private static JFrame calendarFrame;
 	private static ContactsPanel contactsPanel;
+	private static AppointmentsPanel appointmentPanel;
 
 	public static void main(String[] args) {
 		try {
@@ -40,11 +42,17 @@ public class CalendarProgram implements PropertyChangeListener {
 		c.gridy = 0;
 		calendarFrame.getContentPane().add(datePicker,c);
 		
-		contactsPanel = new ContactsPanel();
-		c.insets = new Insets(0,20,0,0);  //left padding
-		c.anchor = GridBagConstraints.WEST;
+		appointmentPanel = new AppointmentsPanel();
 		c.gridx = 0;
 		c.gridy = 1;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(40,20,0,0);  //top and left padding
+		calendarFrame.getContentPane().add(appointmentPanel, c);
+		
+		contactsPanel = new ContactsPanel();
+		c.gridx = 0;
+		c.gridy = 2;
+		c.insets = new Insets(0,20,0,0); 
 		calendarFrame.getContentPane().add(contactsPanel,c);
 		
 		
@@ -52,11 +60,13 @@ public class CalendarProgram implements PropertyChangeListener {
 		c.insets = new Insets(0,0,0,0);
 		c.fill = GridBagConstraints.BOTH;
 		c.gridheight = GridBagConstraints.REMAINDER;
+		
 		c.gridx = 1;
 		c.gridy = 0;
 		c.weightx = 1.0;
 		c.weighty = 1.0;
 		calendarFrame.getContentPane().add(calendarPanel,c);
+		
 	}
 	
 	private static void setupWindow() {
