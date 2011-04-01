@@ -199,22 +199,31 @@ public class Connection extends Thread {
 	 */
 	public boolean sendEvent(String event, Object data) {
 		if (event != null && Arrays.asList(server.network.Client.VALID_EVENTS).contains(event)) {
-			if (event.equals("AddAppointment")) {
-				
-			} else if (event.equals("EditAppointment")) {
-				
-			} else if (event.equals("RemoveAppointment")) {
-				
-			} else if (event.equals("GetAppointsments")) {
-				
-			} else if (event.equals("GetEmployeeList")) {
-				
-			} else if (event.equals("GetRoom")) {
-				
-			} else if (event.equals("GetAvailiableRooms")) {
-				
-			} else if (event.equals("Login")) {
-				
+			try {
+				if (event.equals("AddAppointment")) {
+					Appointment appointment = ((Appointment)data);
+					return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment)));
+				} else if (event.equals("EditAppointment")) {
+					Appointment appointment = ((Appointment)data);
+					return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment)));
+				} else if (event.equals("RemoveAppointment")) {
+					Appointment appointment = ((Appointment)data);
+					return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment)));
+				} else if (event.equals("GetAppointsments")) {
+					return sendMessage("<" + event + ">" + "</" + event + ">");
+				} else if (event.equals("GetEmployeeList")) {
+					return sendMessage("<" + event + ">" + "</" + event + ">");
+				} else if (event.equals("GetRoom")) {
+					Room room = ((Room)data);
+					return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(room)));
+				} else if (event.equals("GetAvailiableRooms")) {
+					// TODO: Implement
+				} else if (event.equals("Login")) {
+					Employee employee = ((Employee)data);
+					return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(employee)));
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage()); // TODO: Remove on release
 			}
 		}
 		return false;
