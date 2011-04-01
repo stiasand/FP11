@@ -192,19 +192,6 @@ public class Connection extends Thread {
 	}
 	
 	/**
-	 * Sends data to the server
-	 * @param event Event type
-	 * @param value Value of the object
-	 * @return If send was successful or not
-	 */
-	public boolean sendEvent(String event, Object value) {
-		if (event != null && Arrays.asList(server.network.Client.VALID_EVENTS).contains(event)) {
-			return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(value)));
-		}
-		return false;
-	}
-	
-	/**
 	 * Opens connection
 	 */
 	public void open() {

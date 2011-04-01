@@ -106,17 +106,7 @@ public abstract class XMLHandler {
 		// TODO: Implement
 		return "";
 	}
-	
-	/**
-	 * Creates XML out of an Object
-	 * @param object Object
-	 * @return XML
-	 */
-	public static String createXml(Object object) {
-		// TODO: Implement
-		return "";
-	}
-	
+		
 	/**
 	 * Creates XML out of an Employee Object
 	 * @param employee Employee object
