@@ -1,7 +1,15 @@
 package model;
 
+import java.util.Date;
+import java.util.List;
+
 public class Meeting extends Appointment {
-	protected Employees participants;
+	protected List<Attending> attending;
+	
+	public Meeting(int id, Employee addedBy, Date addedDate, Date startDate,
+			Date endDate, String description, String location, Room room) {
+		super(id, addedBy, addedDate, startDate, endDate, description, location, room);
+	}
 	
 	public void cancel(){
 		
