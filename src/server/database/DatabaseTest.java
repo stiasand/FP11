@@ -6,19 +6,18 @@ import java.util.List;
 public class DatabaseTest {
 	public static void main(String[] args) {
 		String sql;
-		
 		/*
-		sql = "INSERT INTO Person (name, tlf, email) VALUES (?, ?, ?)";
-		String[] params = {"Arne", "239402", "arne@email.com"};
-		System.out.println("Modified: " + db.modify(sql, params, Database.ReturnType.ROWS));
+		sql = "INSERT INTO Employees (username, name, password) VALUES (?, ?, ?)";
+		String[] params = {"arne", "Arne Bjarne", "arne123pass"};
+		System.out.println("Modified: " + Database.modify(sql, params, Database.ReturnType.ROWS));
 		*/
-		sql = "SELECT * FROM person";
+		sql = "SELECT * FROM Employees";
 		List<HashMap<String, String>> res = Database.retrieve(sql);
 		System.out.println(res.size());
 		for (HashMap<String, String> hm : res) {
+			System.out.println(hm.get("username"));
 			System.out.println(hm.get("name"));
-			System.out.println(hm.get("tlf"));
-			System.out.println(hm.get("email"));
+			System.out.println(hm.get("password"));
 		}
 		res = Database.retrieve(sql);
 		res = Database.retrieve(sql);
