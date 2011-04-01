@@ -9,7 +9,7 @@ public class Meeting extends Appointment {
 	
 	public Meeting(int id, Employee addedBy, Employees employees, Date addedDate, Date startDate,
 			Date endDate, String description, String location, Room room) {
-		super(id, addedBy, addedDate, startDate, endDate, description, location);
+		super(id, addedBy, addedDate, startDate, endDate, description, room.name);
 		this.room = room;
 	}
 	
