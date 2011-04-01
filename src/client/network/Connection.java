@@ -197,7 +197,7 @@ public class Connection extends Thread {
 	 * @param value Value of the object
 	 * @return If send was successful or not
 	 */
-	public boolean sendEvent(String event, Object value) throws Exception {
+	public boolean sendEvent(String event, Object value) {
 		if (event != null && Arrays.asList(server.network.Client.VALID_EVENTS).contains(event)) {
 			return sendMessage(xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(value)));
 		}
