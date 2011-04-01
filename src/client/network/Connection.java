@@ -192,6 +192,35 @@ public class Connection extends Thread {
 	}
 	
 	/**
+	 * Sends data to the server
+	 * @param event Event type
+	 * @param data Data of the event
+	 * @return If send was successful or not
+	 */
+	public boolean sendEvent(String event, Object data) {
+		if (event != null && Arrays.asList(server.network.Client.VALID_EVENTS).contains(event)) {
+			if (event.equals("AddAppointment")) {
+				
+			} else if (event.equals("EditAppointment")) {
+				
+			} else if (event.equals("RemoveAppointment")) {
+				
+			} else if (event.equals("GetAppointsments")) {
+				
+			} else if (event.equals("GetEmployeeList")) {
+				
+			} else if (event.equals("GetRoom")) {
+				
+			} else if (event.equals("GetAvailiableRooms")) {
+				
+			} else if (event.equals("Login")) {
+				
+			}
+		}
+		return false;
+	}
+	
+	/**
 	 * Opens connection
 	 */
 	public void open() {
