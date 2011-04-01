@@ -47,15 +47,15 @@ public class NewAppointmentPanel extends JFrame{
 	private JTextField txtDescription = new JTextField(10);
 	JPopupMenu popup = new JPopupMenu();
 
-	private JTextField txtStartDate = new JTextField(10);
+//	private JTextField txtStartDate = new JTextField(10);
 //	private JTextField txtStartTime = new JTextField(5);
-	private JSpinner spinnerStartTimeHours = new JSpinner();
 	private JSpinner spinnerStartTimeDate = new JSpinner();
+	private JSpinner spinnerStartTimeHours = new JSpinner();
 
-	private JTextField txtEndDate = new JTextField(10);
+//	private JTextField txtEndDate = new JTextField(10);
 //	private JTextField txtEndTime = new JTextField(5);
-	private JSpinner spinnerEndTimeHours = new JSpinner();
 	private JSpinner spinnerEndTimeDate = new JSpinner();
+	private JSpinner spinnerEndTimeHours = new JSpinner();
 
 	private JComboBox cmbPlace = new JComboBox();
 	private JComboBox cmbParticipants = new JComboBox();
@@ -106,10 +106,11 @@ public class NewAppointmentPanel extends JFrame{
 		spinnerStartTimeHours.setModel(modelStartTime);
 		spinnerEndTimeHours.setModel(modelEndTime);
 		spinnerStartTimeDate.setModel(modelStartDate);
+		spinnerEndTimeDate.setModel(modelEndDate);
 		spinnerStartTimeHours.setEditor(new JSpinner.DateEditor(spinnerStartTimeHours, "h:mm a"));
 		spinnerEndTimeHours.setEditor(new JSpinner.DateEditor(spinnerEndTimeHours, "h:mm a"));
-		spinnerStartTimeDate.setEditor(new JSpinner.DateEditor(spinnerStartTimeDate, "MM/yyyy"));
-		
+		spinnerStartTimeDate.setEditor(new JSpinner.DateEditor(spinnerStartTimeDate, "dd/MM/yyyy"));
+		spinnerEndTimeDate.setEditor(new JSpinner.DateEditor(spinnerEndTimeDate, "dd/MM/yyyy"));
 
 
 		
@@ -148,21 +149,15 @@ public class NewAppointmentPanel extends JFrame{
 
 		c.gridwidth=1;
 
-		add(txtStartDate, c);
+		add(spinnerStartTimeDate, c);
 		c.gridx++;
 		add(spinnerStartTimeHours, c);
-		c.gridx++;
-		add(spinnerStartTimeDate, c);
-		c.gridx--;
 		c.gridx--;
 
 		c.gridy++;
-		add(txtEndDate, c);
+		add(spinnerEndTimeDate, c);
 		c.gridx++;
 		add(spinnerEndTimeHours, c);
-		c.gridx++;
-		add(spinnerEndTimeDate, c);
-		c.gridx--;
 		c.gridx--;
 
 
