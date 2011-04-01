@@ -2,7 +2,7 @@ package client.network;
 import java.io.*;
 import java.net.*;
 
-public class Client {
+public class TestClient {
 	private static Socket socket = null;
     private static PrintWriter out = null;
     private static BufferedReader in = null;

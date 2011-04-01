@@ -22,7 +22,7 @@ import server.database.Database;
 public class Client implements Runnable {
 	public static final String CLOSING_PROPERTY = "Closing";
 	public static final String[] VALID_EVENTS = {"AddAppointment", "EditAppointment", "RemoveAppointment", 
-		"GetAppointsments", "GetEmployeeList", "GetRoom", "GetAvailiableRooms", "Login"};
+		"GetAppointsments", "GetEmployeeList", "GetRoom", "GetAvailiableRooms", "Login", "AddMeeting", "EditMeeting", "RemoveMeeting", "GetMeetings", "GetMeeting", "AttendingReply"};
 	public static final int SLEEP = 50;
 	private Socket client;
 	private boolean running = false;
@@ -345,6 +345,18 @@ public class Client implements Runnable {
 				
 			} else if (event.equals("GetAvailiableRooms")) {
 				// TODO: Implement GetAvailiableRooms
+			} else if (event.equals("AddMeeting")) {
+				// TODO: Implement 
+			} else if (event.equals("EditMeeting")) {
+				// TODO: Implement 
+			} else if (event.equals("RemoveMeeting")) {
+				// TODO: Implement 
+			} else if (event.equals("GetMeetings")) {
+				// TODO: Implement 
+			} else if (event.equals("GetMeeting")) {
+				// TODO: Implement 
+			} else if (event.equals("AttendingReply")) {
+				// TODO: Implement 
 			}
 		}
 		
