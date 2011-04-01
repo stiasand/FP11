@@ -159,8 +159,7 @@ public class Client implements Runnable {
 					if (res.size() > 0) {
 						// User was authorized via login
 						auth = employee;
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(employee));
 					} else {
 						return getReplyEvent(EVENT_REPLY.FAIL, "Login failed");
 					}
@@ -190,8 +189,7 @@ public class Client implements Runnable {
 					}
 					
 					if (id != 0 && rows != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
@@ -215,8 +213,7 @@ public class Client implements Runnable {
 					int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
 					
 					if (rowsAppointments != 0 || rowsMeetings != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
@@ -239,8 +236,7 @@ public class Client implements Runnable {
 					int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
 					
 					if (rowsAppointments != 0 && rowsMeetings != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
@@ -285,8 +281,12 @@ public class Client implements Runnable {
 					}
 					
 					if (res.size() > 0 && appointments.size() > 0) {
-						// TODO: Return one XML-object with all Appointment XML-objects that were made 
-						return null;
+						String data = "";
+						for (int i = 0; i < appointments.size(); i++) {
+							data += xml.XMLHandler.createXml(appointments.get(i));
+						}
+						
+						return xml.XMLHandler.createXml(event, data);
 					} else {
 						throw new Exception("Error: Nothing found");
 					}
@@ -309,8 +309,12 @@ public class Client implements Runnable {
 				}
 				
 				if (res.size() > 0 && employees.size() > 0) {
-					// TODO: Return XML-object with all Employee XML-objects that were made in 'employees'
-					return null;
+					String data = "";
+					for (int i = 0; i < employees.size(); i++) {
+						data += xml.XMLHandler.createXml(employees.get(i));
+					}
+					
+					return xml.XMLHandler.createXml(event, data);
 				} else {
 					return getReplyEvent(EVENT_REPLY.FAIL, "No employees found");
 				}
@@ -333,8 +337,7 @@ public class Client implements Runnable {
 						throw new Exception("Error: No such room");
 					}
 					
-					// TODO: Return XML-object of replyRoom
-					return null;
+					return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(replyRoom));
 				} catch (Exception e) {
 					System.out.println(e.getMessage()); // TODO Remove on release
 					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
@@ -366,7 +369,7 @@ public class Client implements Runnable {
 	 * Runs a pingpong to the client. If no response it closes the connection
 	 */
 	public void pingpong() {
-		// TODO: Implement
+		// TODO: (LOW PRIO) Implement
 		/*
 		BufferedReader in = null;
 		PrintWriter out = null;
@@ -395,7 +398,6 @@ public class Client implements Runnable {
 			}
 			
 			// Closes connection if no reply was received
-			// TODO: NOT FINISHED HERE:
 			if (tick)
 			
 			// Waits for message

@@ -6,11 +6,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import server.network.Client;
+import model.Appointment;
+import model.Employee;
+import model.Room;
 
 public class Connection extends Thread {
 	public static final int SLEEP = 50;
@@ -73,34 +77,66 @@ public class Connection extends Thread {
 	}
 	
 	private void recieveMessage(String message) {
-		// TODO: Handle recieveMessage
-		System.out.println("Message recieved: " + message);
-		
 		String event = getEventType(message);
 		if (event != null && Arrays.asList(VALID_EVENTS).contains(event)) {
-			if (event.equals("Event")) {
-				// TODO: Read values into vars from XML in 'message'
-				String eventType = "";
-				String eventMessage = "";
-				
-				JOptionPane.showMessageDialog(null, "Error: " + eventMessage, eventType, JOptionPane.ERROR_MESSAGE);				
-			} else if (event.equals("AddAppointment")) {
-				
-			} else if (event.equals("EditAppointment")) {
-				
-			} else if (event.equals("RemoveAppointment")) {
-				
-			} else if (event.equals("RecieveAppointsments")) {
-				
-			} else if (event.equals("RecieveEmployeeList")) {
-				
-			} else if (event.equals("RecieveRoom")) {
-				
-			} else if (event.equals("RecieveAvailiableRooms")) {
-				
-			} else {
-				// TODO: Remove on release
-				System.out.println("Recieved not valid event");
+			try {
+				if (event.equals("Event")) {
+					// TODO: Read values into vars from XML in 'message'
+					String eventType = "";
+					String eventMessage = "";
+					
+					JOptionPane.showMessageDialog(null, "Error: " + eventMessage, eventType, JOptionPane.ERROR_MESSAGE);				
+				} else if (event.equals("AddAppointment")) {
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
+					executeEvent(event, appointment);
+				} else if (event.equals("EditAppointment")) {
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
+					executeEvent(event, appointment);
+				} else if (event.equals("RemoveAppointment")) {
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
+					executeEvent(event, appointment);
+				} else if (event.equals("RecieveAppointsments")) {
+					List<Appointment> appointments = new ArrayList<Appointment>();
+					int nodeSize = xml.XMLHandler.nodeSize(message, "Appointment");
+					for (int i = 0; i < nodeSize; i++) {
+						String data = xml.XMLHandler.getXmlNode(message, i);
+						Appointment appointment = xml.XMLHandler.createAppointment(data);
+						appointments.add(appointment);
+					}
+					if (appointments.size() > 0) {
+						executeEvent(event, appointments);
+					}
+				} else if (event.equals("RecieveEmployeeList")) {
+					List<Employee> employees = new ArrayList<Employee>();
+					int nodeSize = xml.XMLHandler.nodeSize(message, "Employee");
+					for (int i = 0; i < nodeSize; i++) {
+						String data = xml.XMLHandler.getXmlNode(message, i);
+						Employee employee = xml.XMLHandler.createEmployee(data);
+						employees.add(employee);
+					}
+					if (employees.size() > 0) {
+						executeEvent(event, employees);
+					}
+				} else if (event.equals("RecieveRoom")) {
+					Room room = xml.XMLHandler.createRoom(message);
+					executeEvent(event, room);
+				} else if (event.equals("RecieveAvailiableRooms")) {
+					List<Room> rooms = new ArrayList<Room>();
+					int nodeSize = xml.XMLHandler.nodeSize(message, "Room");
+					for (int i = 0; i < nodeSize; i++) {
+						String data = xml.XMLHandler.getXmlNode(message, i);
+						Room room = xml.XMLHandler.createRoom(data);
+						rooms.add(room);
+					}
+					if (rooms.size() > 0) {
+						executeEvent(event, rooms);
+					}
+				} else {
+					// TODO: Remove on release
+					System.out.println("Recieved not valid event");
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage()); // TODO: Remove on release
 			}
 		} else {
 			// TODO: Remove on release

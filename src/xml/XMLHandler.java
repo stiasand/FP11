@@ -8,6 +8,21 @@ import model.Room;
 
 public abstract class XMLHandler {
 	/**
+	 * @param node What node
+	 * @param xml XML data
+	 * @return Returns how many nodes of the given node the XML contains 
+	 */
+	public static int nodeSize(String xml, String node) {
+		// TODO: Implement
+		return 0;
+	}
+	
+	public static String getXmlNode(String xml, int index) {
+		// TODO: Implement
+		return "";
+	}
+	
+	/**
 	 * Creates an Appointment object from the given XML
 	 * @param xml Appointment-data
 	 * @return Appointment object with values from the XML
@@ -80,4 +95,45 @@ public abstract class XMLHandler {
 		
 		return employee;
 	}
-}
+	
+	/**
+	 * Creates a finished XML with and event and subnodes
+	 * @param event Event name
+	 * @param xml XML
+	 * @return Finished XML
+	 */
+	public static String createXml(String event, String xml) {
+		// TODO: Implement
+		return "";
+	}
+	
+	/**
+	 * Creates XML out of an Employee Object
+	 * @param employee Employee object
+	 * @return XML
+	 */
+	public static String createXml(Employee employee) {
+		// TODO: Implement
+		return "";
+	}
+	
+	/**
+	 * Creates XML out of a Room Object
+	 * @param room Room object
+	 * @return XML
+	 */
+	public static String createXml(Room room) {
+		// TODO: Implement
+		return "";
+	}
+	
+	/**
+	 * Creates XML out of an Appointment Object
+	 * @param appointment Appointment object
+	 * @return XML
+	 */
+	public static String createXml(Appointment appointment) {
+		// TODO: Implement
+		return "";
+	}
+} 
