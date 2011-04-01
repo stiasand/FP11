@@ -12,6 +12,11 @@ public class Employee {
 		this.username = username;
 	}
 	
+	public Employee(String username, String name) {
+		this.username = username;
+		this.name = name;
+	}
+	
 	public Employee(String username, String password, String name) {
 		this.username = username;
 		this.password = password;

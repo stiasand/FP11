@@ -38,7 +38,7 @@ public class Connection extends Thread implements PropertyChangeListener {
 	public void listen() throws IOException {
 		try {
             server = new ServerSocket(PORT);
-        } catch (Exception e) { // IOException
+        } catch (Exception e) { // TODO: IOException
         	// TODO: On release: remove sysout
             System.err.println(e.getMessage());
             throw new IOException();
@@ -56,13 +56,13 @@ public class Connection extends Thread implements PropertyChangeListener {
 	        		Thread t = new Thread(client);
 		        	t.start();
 	        	}
-        	} catch (Exception e) { // IOException
+        	} catch (Exception e) { // TODO: IOException
         		System.out.println(e.getMessage());
         	}
         	
         	try {
         		Thread.sleep(50);
-        	} catch (Exception e) { // InterruptedException
+        	} catch (Exception e) { // TODO: InterruptedException
         		System.out.println(e.getMessage());
         	}
         }
