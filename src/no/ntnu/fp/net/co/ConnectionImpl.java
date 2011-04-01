@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 
+import com.sun.security.auth.UserPrincipal;
+
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import no.ntnu.fp.net.admin.Log;
@@ -36,10 +38,15 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  * @see no.ntnu.fp.net.co.Connection
  * @see no.ntnu.fp.net.cl.ClSocket
  */
-public class ConnectionImpl extends AbstractConnection implements Cloneable {
+public class ConnectionImpl extends AbstractConnection{
 	
-	public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+	private void wait(int t){
+		try {
+			Thread.sleep(t);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
     private static final int CONNECTRETRIES = 3;
@@ -54,14 +61,14 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
      */
     private void reservePort(int port){
     	// check if port is already used, and add to map
-    	if(usedPorts.containsKey(myPort) && usedPorts.get(myPort)){
+    	if(usedPorts.containsKey(port) && usedPorts.get(port)){
     		//port already taken, throw exception/return?
-    		System.out.println("Port already taken!!!");
+    		System.out.println("Port "+port+" already taken!!!");
     		throw new Error();
     	}
     	else{
     		System.out.println("Port "+ port+ " reserved.");
-    		usedPorts.put(myPort, true);
+    		usedPorts.put(port, true);
     	}
     }
     
@@ -117,23 +124,8 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
 		while(startTime+TIMEOUT > new Date().getTime() && !synackOk){//TODO counter i.e. try to connect three times, then throw exception
     		
     		ackPacket=receiveAck(); //wrap in a while/timer?
-    		//check ackpacket for errors
-    		if(ackPacket==null){
-    			System.out.println("No ack-packet received, retry:");
-    		}
-    		else if(ackPacket.getFlag()!=KtnDatagram.Flag.SYN_ACK){
-    			System.out.println("Not a synack, retry:");
-    		}
-    		else if(ackPacket.getAck()!=nextSequenceNo-1){
-    			System.out.println("Wrong sequence no, retry:");
-    		}
-    		else if(ackPacket.getDest_addr().equals(remoteAddress)){
-    			System.out.println("Wrong host, retry:");
-    		}
-    		else {
-    			System.out.println("Valid synack received.");
-    			synackOk=true;
-    		}
+    		synackOk=isValid(ackPacket);
+    		
     	}
 		timer.cancel();
     	
@@ -142,10 +134,9 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     		throw new Error();
     	}
     	
-    	
-    	
     	System.out.println("Sending ACK");
     	//TODO error handling
+    	wait(1000);
     	sendAck(ackPacket, false); //send ack for the synack
     	state=State.ESTABLISHED;
     	System.out.println("\nConnected!!!\n");
@@ -163,55 +154,42 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     	
     	//receive internal packets until we get a syn
     	KtnDatagram synPacket=null;
-    	while(synPacket==null || synPacket.getFlag()!=KtnDatagram.Flag.SYN){
+    	while(true){
         	synPacket=receivePacket(true);
+        	if(isValid(synPacket)){
+        		System.out.println("Got valid synpacket");
+        		break;
+        	}
         }
-        
-    	state=State.SYN_RCVD;
     	
-        //TODO: check if packet is valid
+    	state=State.CLOSED;
+    	
+    	//connection accepted
+        usedPorts.put(myPort, false);
+        ConnectionImpl connection=new ConnectionImpl(myPort);
+        connection.myAddress=synPacket.getDest_addr();
+        connection.remoteAddress=synPacket.getSrc_addr();
+        connection.remotePort=synPacket.getSrc_port();
+        connection.state=State.SYN_RCVD;
         
         //send synack
-        remoteAddress=synPacket.getSrc_addr();
-        remotePort=synPacket.getSrc_port();
-        myAddress=synPacket.getDest_addr();
+        wait(1000);
+    	connection.sendAck(synPacket, true);
+    	
+    	
+    	//wait for ack
+    	KtnDatagram datagram=null;
+        do{
+        	System.out.println("\nWaiting for ack.\n");
+	        datagram=receiveAck(); //dette virker ikke av en eller annen grunn
+        	//datagram=connection.receivePacket(true);
+        }while(!connection.isValid(datagram));
         
-        boolean connectOk = false;
-        for(int i=0; i<CONNECTRETRIES && !connectOk; i++){
-        	System.out.println("Sending synack: ");
-        	sendAck(synPacket, true);
-        	//wait for ack
-	        for(int j=0; j<3 && !connectOk; j++){
-		        KtnDatagram datagram=receiveAck();
-		        connectOk=isValid(datagram);
-		        if(connectOk && datagram.getFlag()!=Flag.ACK){
-		        	System.out.println("Not an ack");
-		        	connectOk=false;
-		        }
-		        //more, check destination address?
-	        }
-        }
-        if(!connectOk){
-        	System.out.println("Never received ack for the synack");
-        	state=State.CLOSED;
-        	throw new ConnectException("Wait for ack timed out");
-        }
-        
-        //connection accepted
-        ConnectionImpl connection=null;
-        try {
-			connection=(ConnectionImpl)this.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        System.out.println("\nConnection Accepted!!!\n");
         connection.state=State.ESTABLISHED;
-        //free resources
+       
+        System.out.println("\nConnection Accepted!!!\n");
         state=State.CLOSED;
-        //usedPorts.put(myPort, false);
- 
+        
     	return connection;
     }
 
@@ -229,11 +207,12 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
      */
     public void send(String msg) throws ConnectException, IOException {
     	System.out.println("\nTrying to send message: " + msg);
-    	if(state!=State.ESTABLISHED)throw new ConnectException("Cannot send: Connection not established.");
+    	if(state!=State.ESTABLISHED)throw new IllegalStateException("Should only be used in ESTABLISHED state.");
     	KtnDatagram packet = constructDataPacket(msg);
     	boolean sendOk=false;
     	for(int i=0; i<3 && !sendOk; i++){
     		KtnDatagram ack=sendDataPacketWithRetransmit(packet);
+    		
     		if(ack == null){
     			System.out.println("No packet received");
     		}
@@ -247,6 +226,9 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     		else {
     			System.out.println("Wrong ackpacket received");
     		}
+    	}
+    	if(!sendOk){
+    		throw new ConnectException("Connection timed out");
     	}
     }
 
@@ -263,9 +245,13 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
     	if(state!=State.ESTABLISHED)throw new ConnectException("Cannot receive: Connection not established.");
         while(true){
         	KtnDatagram datapacket = receivePacket(false);
+
             if(isValid(datapacket)){
             	sendAck(lastValidPacketReceived, false);
             	break;
+            }
+            else{
+            	System.out.println("Invalid packet, continuing receive");
             }
         }
     	return lastValidPacketReceived.toString();
@@ -277,8 +263,98 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
      * @see Connection#close()
      */
     public void close() throws IOException {
-    	//send close message to other end
-    	state=State.CLOSED;
+    	if(disconnectRequest==null){ //do client part of disconnection
+        	KtnDatagram fin = constructInternalPacket(Flag.FIN);
+        	try {
+        		wait(1000);
+    			simplySendPacket(fin);
+    		} catch (ClException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		//fin sent
+//    		state=State.FIN_WAIT_1;
+//    		//wait for ack from server
+//    		while(true){
+//        		KtnDatagram finack = receivePacket(true);
+//        		if(isValid(finack)){
+//        			System.out.println("Received valid ack for the fin");
+//        			break;
+//        		}
+//        		else{
+//        			System.out.println("Ivalid finack");
+//        		}
+//    		}
+    		state=State.FIN_WAIT_1;
+    		while(true){
+    			System.out.println("\nWaiting for ack\n");
+    			KtnDatagram ack = receivePacket(true);
+    			if(isValid(ack)){
+    				break;
+    			}
+    		}
+    		System.out.println("Valid ack received");
+    		
+    		
+    		state=State.FIN_WAIT_2;
+    		System.out.println("Waiting for fin");
+    		//wait for fin
+    		while(true){
+    			try{
+    				KtnDatagram internalPacket=receivePacket(true);
+        			if(isValid(internalPacket)){
+        				System.out.println("Valid fin received");
+        				disconnectRequest=internalPacket;
+        				break;
+        			}
+    			}
+    			catch(EOFException e){
+    				//shouldn't happen
+    			}
+    			System.out.println("Still waiting for fin...");
+    		}
+    		
+    		//fin received, send ack
+    		System.out.println("Fin received, sending ack");
+    		wait(1000);
+    		sendAck(disconnectRequest, false);
+    		
+    	}
+    	else{ //do server part of disconnecting
+    		//ack the fin
+    		wait(1000);
+    		sendAck(disconnectRequest, false);
+    		
+    		//send fin
+    		KtnDatagram fin = constructInternalPacket(Flag.FIN);
+    		try {
+    			wait(1000);
+				simplySendPacket(fin);
+			} catch (ClException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			state=State.CLOSE_WAIT;
+//			try {
+//				Thread.sleep(2000); //wait 2 secs for the ack to arrive
+//			} catch (InterruptedException e) {
+//				//do nothing
+//			} 
+			
+			while(true){
+				KtnDatagram ack = receiveAck();
+				if(isValid(ack)){
+					break;
+				}
+			}
+    	}
+    	//Code for both server and client close
+    	
+    	//were finished :)
+		state=State.CLOSED;
+		
+		//free port
         usedPorts.put(myPort, false);
     }
 
@@ -291,21 +367,124 @@ public class ConnectionImpl extends AbstractConnection implements Cloneable {
      * @return true if packet is free of errors, false otherwise.
      */
     protected boolean isValid(KtnDatagram packet) {
-    	if(state!=State.ESTABLISHED && state!=State.SYN_RCVD)throw new Error();
-    	else if(packet==null)
-        	System.out.println("No datagram received");
-        else if(packet.getFlag()==Flag.ACK && packet.getAck()!=nextSequenceNo-1)
-        	System.out.println("Wrong ack");
-        else if(!packet.getSrc_addr().equals(remoteAddress))
-        	System.out.println("Wrong source address");
-        else if(packet.getSrc_port()!=remotePort)
-        	System.out.println("Wrong source port");
-        else {		        //more, check destination address?
-        	System.out.println("Packet is valid");
-        	lastValidPacketReceived=packet;
-        	return true; //passed all tests :)
-        }
+    	System.out.println("Checking packet for state "+state);
+    	if(packet==null){ //if the packet is null, it's definitely invalid
+			System.out.println("packet is null");
+			return false;
+		}
     	
-    	return false; //one of the tests failed
+    	switch(state){
+    	case ESTABLISHED:
+    		//we're expecting a datapacket or an ack
+    		if(packet.getFlag()==Flag.ACK){
+    			//ack
+    			if(packet.getAck()!=nextSequenceNo-1){
+    				System.out.println("Wrong ack");
+    				return false;
+    			}
+    		}
+    		else if(packet.getFlag()==Flag.NONE){
+    			//datapacket
+    			if(packet.getChecksum()!=packet.calculateChecksum()){
+    				System.out.println("Invalid checksum");
+    				return false;
+    			}
+    		}
+    		else{
+    			System.out.println("Invalid flag");
+    			return false;
+    		}
+    		if(!packet.getSrc_addr().equals(remoteAddress)){
+            	System.out.println("Wrong source address");
+    			return false;
+    		}
+            else if(packet.getSrc_port()!=remotePort){
+            	System.out.println("Wrong source port");
+            	return false;
+            }
+            else {		        //more, check destination address?
+            	System.out.println("Packet is valid");
+            	lastValidPacketReceived=packet;
+            	return true; //passed all tests :)
+            }
+    	case LISTEN:
+    		//waiting for syn
+			if(packet.getFlag()!=Flag.SYN){
+				System.out.println("Not a syn packet");
+				return false;
+			} 
+			else return true;
+    	case SYN_RCVD:
+    		System.out.println("Expecting ack for the syn");
+    		//only valid packet is an ack for the synack
+    		if(packet.getFlag()!=Flag.ACK){
+    			System.out.println("Not an ack");
+    			return false;
+    		}
+    		else if (packet.getAck()!=nextSequenceNo-1){
+    			System.out.println("Wrong sequence no");
+    			return false;
+    		}
+    		else{
+    			return true;
+    		}
+    		//TODO: more tests on rcvd?
+    	case SYN_SENT:
+    		//only valid packet in this state is a synack
+    		//check synackpacket for errors
+    		if(packet.getFlag()!=KtnDatagram.Flag.SYN_ACK){
+    			System.out.println("Not a synack");
+    			return false;
+    		}
+    		else if(packet.getAck()!=nextSequenceNo-1){
+    			System.out.println("Wrong sequence no");
+    			return false;
+    		}
+    		else if(!packet.getSrc_addr().equals(remoteAddress)){
+    			System.out.println("Wrong source");
+    			return false;
+    		}
+    		else {
+    			System.out.println("Valid synack received.");
+    			return true;
+    		}
+    	case FIN_WAIT_1:
+    		//fin is sent and we are waiting for an ack for the fin
+    		if(packet.getFlag()!=KtnDatagram.Flag.ACK){
+    			System.out.println("Not an ack");
+    			return false;
+    		}
+    		else if(packet.getAck()!=nextSequenceNo-1){
+    			System.out.println("Wrong sequence no");
+    			return false;
+    		}
+    		else if(!packet.getSrc_addr().equals(remoteAddress)){
+    			System.out.println("Wrong source address");
+    			return false;
+    		}
+    		else {
+    			System.out.println("Valid ack received.");
+    			return true;
+    		}
+    	case FIN_WAIT_2:
+    		System.out.println("Checking finpacket");
+    		if(packet.getFlag()!=Flag.FIN){
+    			System.out.println("Not a fin");
+    			return false;
+    		}
+    		else return true;
+    	case CLOSE_WAIT:
+    		System.out.println("Checking ack");
+    		if(packet.getFlag()!=Flag.ACK){
+    			System.out.println("Not an ack");
+    			return false;
+    		}
+    		else return true;
+    	default:
+    			System.out.println("Unsupported state");
+    			return false;
+    		
+    	}
+    	//return false; //one of the tests failed
     }
 }
