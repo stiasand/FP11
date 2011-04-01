@@ -20,3 +20,14 @@ Fail:
 <Type>Fail</Type>
 <Message>...</Message>
 </Event>
+
+
+ALSO:
+GetMessages(...)
+AddAttendees(appointment, employees)
+GetAttendees(appointment)
+ReplyAttending(appointment, employee, answer)
+
+Do messages through Server.network.Connection and do it via the listener. 
+	When a message is to be sent just send a changeEvent and Connection will handle it
+	and send the message through Client.sendMessage(message) for all connected clients

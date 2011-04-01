@@ -21,9 +21,6 @@ import server.database.Database;
 
 public class Client implements Runnable {
 	public static final String CLOSING_PROPERTY = "Closing";
-	public static final String MESSAGE_OK = "OK!";
-	public static final String MESSAGE_FAIL = "FAIL!";
-	public static final String MESSAGE_NOTRECOGNIZED = "NOT RECOGNIZED!";
 	public static final String[] VALID_EVENTS = {"AddAppointment", "EditAppointment", "RemoveAppointment", 
 		"GetAppointsments", "GetEmployeeList", "GetRoom", "GetAvailiableRooms", "Login"};
 	public static final int SLEEP = 50;
@@ -36,6 +33,10 @@ public class Client implements Runnable {
 	private PrintWriter out = null;
 	
 	private PropertyChangeSupport pcs;
+	
+	public static enum EVENT_REPLY {
+		OK, FAIL, NOTRECOGNIZED, XMLERROR, NOTLOGGEDIN;
+	}
 	
 	public Client(Socket client) {
 		this.client = client;
@@ -60,6 +61,9 @@ public class Client implements Runnable {
 		}
 	}
 	
+	/**
+	 * Thread starts, and socket starts listening
+	 */
 	public void run() {
 		try {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -106,7 +110,7 @@ public class Client implements Runnable {
 	 */
 	private String message(String message) {
 		tick = System.currentTimeMillis();
-		String event = getEvent(message);
+		String event = getEventType(message);
 		
 		if (message.toLowerCase().equals("close")) {
 			close();
@@ -114,8 +118,7 @@ public class Client implements Runnable {
 		} else if (Arrays.asList(VALID_EVENTS).contains(event)) {
 			return executeEvent(event, message);
 		} else {
-			// TODO: Return XMl-object for NOTRECOGNIZED
-			return Client.MESSAGE_NOTRECOGNIZED;
+			return getReplyEvent(EVENT_REPLY.NOTRECOGNIZED, "Event not recognized");
 		}
 	}
 	
@@ -123,8 +126,18 @@ public class Client implements Runnable {
 	 * @param message Message (XML)
 	 * @return Event name in the message
 	 */
-	private String getEvent(String message) {
+	private String getEventType(String message) {
+		// TODO: Get event type from XML in message
 		return "";
+	}
+	
+	/**
+	 * @param eventType The associated reply event
+	 * @param replyMessage The message that is included in the event
+	 * @return XML-object for the given eventType
+	 */
+	public static String getReplyEvent(EVENT_REPLY eventType, String replyMessage) {
+		return "<Event><Type>" + eventType + "</Type><Message>" + replyMessage + "</Message></Event>";
 	}
 	
 	/**
@@ -138,7 +151,7 @@ public class Client implements Runnable {
 		if (event != null) {
 			if (event.equals("Login")) {
 				try {
-					Employee employee = createEmployee(message);
+					Employee employee = xml.XMLHandler.createEmployee(message);
 					
 					String sql = "SELECT * FROM Employees WHERE username = ? AND password = ?";
 					String[] params = {employee.getUsername(), employee.getPassword()};
@@ -146,24 +159,21 @@ public class Client implements Runnable {
 					if (res.size() > 0) {
 						// User was authorized via login
 						auth = employee;
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(employee));
 					} else {
-						throw new Exception("Error: Nothing updated");
+						return getReplyEvent(EVENT_REPLY.FAIL, "Login failed");
 					}
 				} catch (Exception e) {
 					System.out.println(e.getMessage()); // TODO: Remove on release
-					// Return ERROR-object (XML-Error)
-					return null;
+					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
 				}
 			} else if (auth == null) {
 				// Client not logged in
-				// TODO: Return NOTLOGGEDIN XMl-Object
-				return null;
+				return getReplyEvent(EVENT_REPLY.NOTLOGGEDIN, "Not logged in");
 			} else if (event.equals("AddAppointment")) {
 				try {
-					Appointment appointment = createAppointment(message);
-					Room room = createRoom(message);
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
+					Room room = xml.XMLHandler.createRoom(message);
 					
 					// TODO: Possible bug: will this set addedDate to now() or not?
 					String sql = "INSERT INTO Appointments (employee, addedDate, startDate, endDate, description, location) VALUES (?, ?, ?, ?, ?)";
@@ -179,21 +189,19 @@ public class Client implements Runnable {
 					}
 					
 					if (id != 0 && rows != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
 				} catch (Exception e) {
 					System.out.println(e.getMessage()); // TODO Remove on release
-					// Return ERROR-object (XML-Error)
-					return null;
+					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
 				}
 			} else if (event.equals("EditAppointment")) {
 				try {
 					// TODO: Currently any employee can edit any appointment (does not have to be owner)
-					Appointment appointment = createAppointment(message);
-					Room room = createRoom(message);
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
+					Room room = xml.XMLHandler.createRoom(message);
 					
 					String sqlAppointments = "UPDATE Appointments SET employee = ?, startDate = ?, endDate = ?, description = ?, location = ? WHERE id = ?";
 					String[] paramsAppointments = {appointment.getAddedBy().getUsername(), appointment.getStartDate().toString(), 
@@ -205,22 +213,19 @@ public class Client implements Runnable {
 					int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
 					
 					if (rowsAppointments != 0 || rowsMeetings != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
 					
 				} catch (Exception e) {
 					System.out.println(e.getMessage()); // TODO Remove on release
-					// Return ERROR-object (XML-Error)
-					return null;
+					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
 				}
 			} else if (event.equals("RemoveAppointment")) {
-				// TODO: Read XML from "message" into these vars
 				try {
 					// TODO: Currently anyone can delete any appointment
-					Appointment appointment = createAppointment(message);
+					Appointment appointment = xml.XMLHandler.createAppointment(message);
 	
 					String sqlAppointments = "DELETE FROM Appointments WHERE id = ?";
 					String[] paramsAppointments = {String.valueOf(appointment.getId())};
@@ -231,19 +236,17 @@ public class Client implements Runnable {
 					int rowsMeetings = Database.modify(sqlMeetings, paramsMeetings, Database.ReturnType.ROWS);
 					
 					if (rowsAppointments != 0 && rowsMeetings != 0) {
-						// TODO: Return XML-object that was created by this event
-						return "";
+						return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(appointment));
 					} else {
 						throw new Exception("Error: Nothing updated");
 					}
 				} catch (Exception e ) {
 					System.out.println(e.getMessage()); // TODO Remove on release
-					// Return ERROR-object (XML-Error)
-					return null;
+					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
 				}
 			} else if (event.equals("GetAppointsments")) {
 				try {
-					Employee employee = createEmployee(message);
+					Employee employee = xml.XMLHandler.createEmployee(message);
 
 					String sql = "SELECT * FROM Appointments WHERE employee = ?";
 					String[] params = {employee.getUsername()};
@@ -278,76 +281,74 @@ public class Client implements Runnable {
 					}
 					
 					if (res.size() > 0 && appointments.size() > 0) {
-						// TODO: Return one XML-object with all Appointment XML-objects that were made 
-						return null;
+						String data = "";
+						for (int i = 0; i < appointments.size(); i++) {
+							data += xml.XMLHandler.createXml(appointments.get(i));
+						}
+						
+						return xml.XMLHandler.createXml(event, data);
 					} else {
 						throw new Exception("Error: Nothing found");
 					}
 				} catch (Exception e) {
 					System.out.println(e.getMessage()); // TODO Remove on release
-					// Return ERROR-object (XML-Error)
-					return null;
+					return getReplyEvent(EVENT_REPLY.FAIL, "Could not get appointments");
 				}
+			} else if (event.equals("GetEmployeeList")) {
+				String sql = "SELECT username, name FROM Employees";
+				
+				List<Employee> employees = new ArrayList<Employee>();
+				List<HashMap<String, String>> res = Database.retrieve(sql);
+				
+				try {
+					for (HashMap<String, String> hm : res) {
+						employees.add(new Employee(hm.get("username"), hm.get("name")));
+					}
+				} catch (Exception e) {
+					return getReplyEvent(EVENT_REPLY.FAIL, "Could not get employee list");
+				}
+				
+				if (res.size() > 0 && employees.size() > 0) {
+					String data = "";
+					for (int i = 0; i < employees.size(); i++) {
+						data += xml.XMLHandler.createXml(employees.get(i));
+					}
+					
+					return xml.XMLHandler.createXml(event, data);
+				} else {
+					return getReplyEvent(EVENT_REPLY.FAIL, "No employees found");
+				}
+			} else if (event.equals("GetRoom")) {
+				try {
+					Room room = xml.XMLHandler.createRoom(message);
+					
+					String sql = "SELECT * FROM Room WHERE name = ?";
+					String[] params = {room.getName()};
+					
+					List<HashMap<String, String>> res = Database.retrieve(sql, params);
+					
+					Room replyRoom;
+					if (res.size() > 0) {
+						String roomName = res.get(0).get("name");
+						int roomSize = Integer.parseInt(res.get(0).get("size"));
+						String roomDescription = res.get(0).get("description");
+						replyRoom = new Room(roomName, roomSize, roomDescription);
+					} else {
+						throw new Exception("Error: No such room");
+					}
+					
+					return xml.XMLHandler.createXml(event, xml.XMLHandler.createXml(replyRoom));
+				} catch (Exception e) {
+					System.out.println(e.getMessage()); // TODO Remove on release
+					return getReplyEvent(EVENT_REPLY.XMLERROR, "XML error");
+				}
+				
+			} else if (event.equals("GetAvailiableRooms")) {
+				// TODO: Implement GetAvailiableRooms
 			}
 		}
 		
-		return null;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public Appointment createAppointment(String message) throws Exception {
-		// TODO: Read XML from "message" into these vars
-		String id = "";
-		String addedDate = "";
-		String startDate = "";
-		String endDate = "";
-		String description = "";
-		String location = "";
-		Appointment appointment;
-		
-		try {
-			Employee employee = createEmployee(message);
-			Room room = createRoom(message);
-			
-			appointment = new Appointment(Integer.parseInt(id), employee, new Date(addedDate), 
-					new Date(startDate), new Date(endDate), description, location, room);
-		} catch (Exception e) {
-			throw new Exception("XML-Error");
-		}
-		return appointment;
-	}
-	
-	public Room createRoom(String message) throws Exception {
-		// TODO: Read XML from "message" into these vars
-		String room_Name = ""; // Rooms-> name
-		String room_Size = "";
-		String room_Description = "";
-		Room room;
-		
-		try {
-			room = new Room(room_Name, Integer.parseInt(room_Size), room_Description);
-		} catch (Exception e) {
-			throw new Exception("XML-Error");
-		}
-		
-		return room;
-	}
-	
-	public Employee createEmployee(String message) throws Exception {
-		// TODO: Read XML from "message" into these vars
-		String username = "";
-		String password = "";
-		String name = "";
-		
-		Employee employee;
-		
-		try {
-			employee = new Employee(username, password, name);
-		} catch (Exception e) {
-			throw new Exception("XML-Error");
-		}
-		
-		return employee;
+		return getReplyEvent(EVENT_REPLY.NOTRECOGNIZED, "Event not recognized");
 	}
 
 	/**
@@ -368,6 +369,7 @@ public class Client implements Runnable {
 	 * Runs a pingpong to the client. If no response it closes the connection
 	 */
 	public void pingpong() {
+		// TODO: (LOW PRIO) Implement
 		/*
 		BufferedReader in = null;
 		PrintWriter out = null;
@@ -396,7 +398,6 @@ public class Client implements Runnable {
 			}
 			
 			// Closes connection if no reply was received
-			// TODO: NOT FINISHED HERE:
 			if (tick)
 			
 			// Waits for message
@@ -410,7 +411,7 @@ public class Client implements Runnable {
 	}
 	
 	/**
-	 * Throws events related to this Client
+	 * Adds listener to events related to this Client
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
